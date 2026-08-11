@@ -1,4 +1,6 @@
 :root {
+    color-scheme: dark;
+    --color-teal-400: oklch(72% .16 250);
     --color-teal-500: oklch(58% .22 250);
     --color-teal-600: oklch(50% .22 250);
     --color-teal-700: oklch(44% .2 250);
@@ -175,7 +177,7 @@ body {
 .card-title {
     font-size: 18px;
     font-weight: 700;
-    color: var(--color-teal-600);
+    color: var(--color-teal-400);
 }
 
 .card-type {
@@ -323,7 +325,7 @@ body {
 .modal-title {
     font-size: 24px;
     margin-bottom: 20px;
-    color: var(--color-teal-600);
+    color: var(--color-teal-400);
 }
 
 .result-section {
@@ -339,11 +341,16 @@ body {
 .result-value {
     font-size: 18px;
     font-weight: 700;
-    color: var(--color-teal-600);
+    color: var(--color-teal-400);
 }
 
 .loading {
     text-align: center;
     padding: 40px;
     color: var(--color-slate-500);
+}
+
+option {
+    background: var(--color-cream-100);
+    color: var(--color-text);
 }
