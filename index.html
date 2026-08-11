@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moto e Trilha - Cartas Contempladas</title>
+    <link rel="stylesheet" href="style.css">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://cartas.motoetrilha.com.br/">
+    <meta property="og:title" content="Moto e Trilha - Cartas Contempladas">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Moto e Trilha - Cartas Contempladas">
+    <link rel="canonical" href="https://cartas.motoetrilha.com.br/" />
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏍️ Moto e Trilha - Cartas Contempladas</h1>
+            <p>Selecione até 5 cotas para fazer a junção. WhatsApp: (62) 96686311</p>
+        </div>
+
+        <div class="status-box" id="statusBox">
+            <span id="statusText">Carregando...</span>
+        </div>
+
+        <div class="filters">
+            <h3>🔍 Busca Inteligente por Valor</h3>
+            <div class="filter-grid" style="margin-bottom: 15px;">
+                <div class="filter-group">
+                    <label>🎯 Crédito Desejado:</label>
+                    <input type="number" id="buscaCredito" placeholder="Ex: 40000">
+                </div>
+                <div class="filter-group">
+                    <label>🔢 Máximo de Cotas:</label>
+                    <select id="buscaMaxCotas" style="width: 100%; padding: 10px 12px; border: 1px solid var(--color-border); border-radius: 8px; font-size: 14px; background: var(--color-cream-100); color: var(--color-text);">
+                        <option value="1">1 Cota</option>
+                        <option value="2">Até 2 Cotas</option>
+                        <option value="3" selected>Até 3 Cotas</option>
+                        <option value="4">Até 4 Cotas</option>
+                        <option value="5">Até 5 Cotas</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>🔀 Ordenar por:</label>
+                    <select id="buscaCriterio" style="width: 100%; padding: 10px 12px; border: 1px solid var(--color-border); border-radius: 8px; font-size: 14px; background: var(--color-cream-100); color: var(--color-text);">
+                        <option value="Mais próximo">Mais próximo do valor</option>
+                        <option value="Menor entrada">Menor entrada</option>
+                        <option value="Maior entrada">Maior entrada</option>
+                        <option value="Menor parcela">Menor parcela</option>
+                    </select>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-primary" onclick="buscarCombinacoes()" style="flex: 1;">🔎 Buscar Combinações</button>
+                <button class="btn btn-clear" onclick="limparBusca()">🧹 Limpar</button>
+            </div>
+        </div>
+
+        <div class="filters">
+            <h3>🔍 Filtros Rápidos (Manuais)</h3>
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <label>💰 Crédito Mínimo:</label>
+                    <input type="number" id="filterCredito" placeholder="Ex: 20000">
+                </div>
+                <div class="filter-group">
+                    <label>📅 Prazo Máximo:</label>
+                    <input type="number" id="filterPrazo" placeholder="Ex: 60">
+                </div>
+                <div class="filter-group">
+                    <label>💵 Parcela Máxima:</label>
+                    <input type="number" id="filterParcela" placeholder="Ex: 1000">
+                </div>
+            </div>
+            <button class="btn btn-clear" onclick="limparFiltros()">🧹 Limpar Filtros</button>
+        </div>
+
+        <div id="cardsContainer" class="cards-grid">
+            <div class="loading">Carregando cartas...</div>
+        </div>
+
+        <div class="selection-panel" id="selectionPanel">
+            <div class="selection-header">
+                <span id="selectedCount">0</span> carta(s) selecionada(s) (máximo 5)
+            </div>
+            <div class="selection-actions">
+                <button class="btn btn-primary" onclick="calcularJuncao()">📊 Calcular Junção</button>
+                <button class="btn btn-secondary" onclick="limparSelecao()">🗑️ Limpar Seleção</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="resultModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="fecharModal()">×</button>
+            <h2 class="modal-title">📊 Resultado da Junção</h2>
+            <div id="resultContent"></div>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button class="btn btn-copy btn-primary" onclick="copiarResultado()">📋 Copiar Texto</button>
+                <button class="btn btn-whatsapp" onclick="enviarWhatsApp()">📱 Enviar WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
