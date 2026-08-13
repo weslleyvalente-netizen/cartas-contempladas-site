@@ -1,0 +1,10 @@
+{
+  "name": "cartas-contempladas-site",
+  "private": true,
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.0"
+  }
+}
