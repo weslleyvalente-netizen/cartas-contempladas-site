@@ -1,5 +1,4 @@
 
-        const PUBLISHED_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTxhJet0XXk2EGFmYNZsA1ufw0EWbUtgy8fWc_FDIwJuVGcsDs3bBF9_FmaAU0L3zoidYa5ECppAXTE/pub?gid=435642868&single=true&output=csv';
         const WHATSAPP_NUMBER = '556296686311';
         
         let cartas = [];
@@ -26,45 +25,31 @@
         // Buscar cartas
         async function carregarCartas() {
             try {
-                const response = await fetch(PUBLISHED_CSV_URL);
-                
-                if (response.ok) {
-                    const text = await response.text();
-                    const rows = parseCSV(text);
-                    // Remove cabeçalho
-                    rows.shift();
-                    processarDados(rows);
-                } else {
-                    // Usa dados mockados se falhar
-                    processarDados(MOCK_DATA);
-                }
+                const [parceirosRes, cartasParceirosRes, cartasPropriasRes, configRes] = await Promise.all([
+                    supabaseClient.from('parceiros').select('*'),
+                    supabaseClient.from('cartas_parceiros').select('*'),
+                    supabaseClient.from('cartas_proprias').select('*'),
+                    supabaseClient.from('configuracoes').select('*').eq('chave', 'agio_padrao').single()
+                ]);
+
+                if (parceirosRes.error) throw parceirosRes.error;
+                if (cartasParceirosRes.error) throw cartasParceirosRes.error;
+                if (cartasPropriasRes.error) throw cartasPropriasRes.error;
+                if (configRes.error) throw configRes.error;
+
+                cartas = mesclarCartas({
+                    cartasParceiros: cartasParceirosRes.data,
+                    parceiros: parceirosRes.data,
+                    cartasProprias: cartasPropriasRes.data,
+                    agioPadraoGlobal: parseFloat(configRes.data.valor) || 0
+                });
+
+                document.getElementById('statusText').innerHTML = `${cartas.length} cotas ✅ Online`;
+                renderizarCartas();
             } catch (error) {
                 console.error('Erro ao carregar:', error);
                 processarDados(MOCK_DATA);
             }
-        }
-        
-        function parseCSV(text) {
-            const lines = text.split('\n');
-            return lines.map(line => {
-                const values = [];
-                let current = '';
-                let inQuotes = false;
-                
-                for (let i = 0; i < line.length; i++) {
-                    const char = line[i];
-                    if (char === '"') {
-                        inQuotes = !inQuotes;
-                    } else if (char === ',' && !inQuotes) {
-                        values.push(current.trim());
-                        current = '';
-                    } else {
-                        current += char;
-                    }
-                }
-                values.push(current.trim());
-                return values;
-            }).filter(row => row.length > 1 && row[0]);
         }
         
         function processarDados(rows) {
