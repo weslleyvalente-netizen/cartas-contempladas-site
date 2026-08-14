@@ -28,13 +28,14 @@ create table public.parceiros (
   nome text not null unique,
   link text,
   agio_padrao numeric(12,2),
+  faixa_inicial int not null,
   ativo boolean not null default true,
   created_at timestamptz not null default now()
 );
 
-insert into public.parceiros (nome) values
-  ('Parceiro Principal'),
-  ('Jorge Consórcios')
+insert into public.parceiros (nome, faixa_inicial) values
+  ('Parceiro Principal', 300),
+  ('Jorge Consórcios', 200)
 on conflict (nome) do nothing;
 
 -- Cards scraped from partners by the cartas-sync robot.
@@ -91,35 +92,51 @@ create trigger cartas_proprias_set_updated_at
   before update on public.cartas_proprias
   for each row execute function public.set_updated_at();
 
--- Assigns a short, per-carta-fixed sequential number, shared across
--- cartas_proprias and cartas_parceiros, that resets to 1 on the first
--- insert of each new calendar month. Only ever set on INSERT — a carta
--- keeps its number even after the month rolls over. Runs even on rows
--- that end up as no-op UPDATEs via upsert's ON CONFLICT DO UPDATE (the
--- computed value is simply discarded in that case, since it never
--- becomes a persisted row), so it never wastes numbers or leaves gaps.
+-- Assigns a short, per-carta-fixed sequential number. Each origin (each
+-- partner, and cartas próprias) has its own numeric range, starting at
+-- that origin's faixa_inicial (parceiros.faixa_inicial, or the
+-- configuracoes 'faixa_inicial_proprias' entry for cartas próprias), and
+-- its own independent monthly reset back to the start of its range. Only
+-- ever set on INSERT — a carta keeps its number even after the month
+-- rolls over. Runs even on rows that end up as no-op UPDATEs via
+-- upsert's ON CONFLICT DO UPDATE (the computed value is simply discarded
+-- in that case, since it never becomes a persisted row), so it never
+-- wastes numbers or leaves gaps.
 create or replace function public.atribuir_numero_sequencial()
 returns trigger
 language plpgsql
 as $$
 declare
   mes_atual date := date_trunc('month', now());
+  faixa int;
   max_atual int;
 begin
-  -- Serializes assignment across concurrent transactions (admin UI +
-  -- cartas-sync robot writing at the same time).
-  perform pg_advisory_xact_lock(hashtext('cartas_numero_sequencial'));
+  if TG_TABLE_NAME = 'cartas_proprias' then
+    -- Serializes assignment across concurrent transactions writing
+    -- cartas próprias (only admin does this today, but kept for safety).
+    perform pg_advisory_xact_lock(hashtext('numero_sequencial_proprias'));
 
-  select coalesce(max(numero_sequencial), 0) into max_atual
-  from (
-    select numero_sequencial from public.cartas_proprias
-      where date_trunc('month', created_at) = mes_atual
-    union all
-    select numero_sequencial from public.cartas_parceiros
-      where date_trunc('month', created_at) = mes_atual
-  ) t;
+    select coalesce(valor::int, 1) into faixa
+      from public.configuracoes where chave = 'faixa_inicial_proprias';
 
-  new.numero_sequencial := max_atual + 1;
+    select coalesce(max(numero_sequencial), faixa - 1) into max_atual
+      from public.cartas_proprias
+      where date_trunc('month', created_at) = mes_atual;
+  else
+    -- Serializes per partner (admin + cartas-sync robot writing the same
+    -- partner's cards at the same time) without blocking other partners.
+    perform pg_advisory_xact_lock(hashtext('numero_sequencial_parceiro_' || new.parceiro_id));
+
+    select faixa_inicial into faixa
+      from public.parceiros where id = new.parceiro_id;
+
+    select coalesce(max(numero_sequencial), faixa - 1) into max_atual
+      from public.cartas_parceiros
+      where parceiro_id = new.parceiro_id
+        and date_trunc('month', created_at) = mes_atual;
+  end if;
+
+  new.numero_sequencial := greatest(max_atual + 1, faixa);
   return new;
 end;
 $$;
@@ -139,6 +156,9 @@ create table public.configuracoes (
 );
 
 insert into public.configuracoes (chave, valor) values ('agio_padrao', '0')
+on conflict (chave) do nothing;
+
+insert into public.configuracoes (chave, valor) values ('faixa_inicial_proprias', '1')
 on conflict (chave) do nothing;
 
 -- Row Level Security
