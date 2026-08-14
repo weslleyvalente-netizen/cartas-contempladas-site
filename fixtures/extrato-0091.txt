@@ -1,0 +1,105 @@
+0101 YAMAHA ADM DE CONSORCIO LTDA 14/08/2026 00:58:47
+Extrato do Consorciado - Extrato Atualizado Ouvidoria: 008007749000
+Ouvidoria: 0 ()
+Grupo: 008097 Cota: 0091-00 CARLA DIAS DOS SANTOS VALENTE Contrato: 20528053
+Dados Cadastrais
+Pessoa: Física Data Nascimento: 07/01/1986
+CPF/CNPJ: 019.165.681-06 Documento: 34841601 Profissão:
+Endereço de Correspondência
+Endereço: RUA ESTUDANTE JOSE F ROSA n°: 608 Complemento: Q. 18, L. 0 CEP: 73900000
+Bairro: setor central Cidade: POSSE UF: GO
+Cx. Postal: Telefone: 62 996686311 Ramal:
+Filiação
+Nome do pai: CARLITO EVANGELISTA DOS SANTOS Nome da mãe: JUSTINA DIAS DOS SANTOS
+Dados do Plano
+Data Venda: 20/01/2026 Data Adesão: 14/01/2026 Tipo de Venda: MAX MEGA
+1ª Assembleia: 12/02/2026 034 Taxa Adm: 18,0000% Produto: 000001MOTOCICLE
+Plano Básico: 36 meses Fundo Reserva: 0,0000% SubProduto: 000001MOTOCICLE
+Prazo do grupo: 78 meses % Mensal do Fundo Comum: 2,6403% Último reajuste em: 14/07/2026
+Plano de Seguro: 000008NOVO - MOTO (VIDA & SQG) % Mensal c/ Taxas: 3,5156%
+Seguradora: 001MAPFRE SEGUROS GERAIS% Cob. Contemp: 0,0000%
+Assembleia Atual: 14/09/2026 041 Vencimento: 08/09/2026 Local: YAMAHA ADM DE CONSORCIO LTDA
+Filial de Venda: 000019 GOIAS - GO Ponto de Venda: 008121 MOTO E TRILHA COMERCIO DE VEICULOS 
+Filial Adm.: 000003 YAMAHA ADM. DE CONSORCIO LTDA. Comissionado: 008121 MOTO E TRILHA COMERCIO DE VEICULOS 
+Convênio: 000000
+000080
+00
+PARCEIROS COMERCIAIS
+Sit. de Cobrança: NORMAL Data Última Sit.: 07/07/2026 15:49:37
+Bem: 922TX FACTOR 150 ED Valor Crédito: R$ 21.351,00
+Data prevista para o encerramento: 11/10/2029 Data do último vencimento: 08/01/2029
+Contemplação
+Dt. Contemplação: 12/08/2026 Crédito: R$ 21.351,00
+Tipo Contempl.: Lance 13 pcls. Crédito Corrigido: R$ 21.351,00
+Data do Pagamento: Valor Bem Entregue: R$ 0,00
+Entrega Docum.: Liquido à Pagar: R$ 21.351,00
+Percentuais
+Pago
+% Normal: 15,5119%
+% Antecipado: 0,0000%
+Pendente
+0,0000%
+A cobrar
+84,4881%
+Total
+100,0000%
+0,0000%
+% Mensal do Fundo Comum: 2,6403%
+Ideal Pago: 15,5118%
+Diferença: -0,0001%
+Contribuição Mensal
+% Seguro: 0,1441%
+TOTAL 15,5119% 0,0000% 84,4881% 100,0000% Ideal Devido: 84,4882% Valor Contrib. Mensal: R$ 750,61
+Conta Corrente
+Ass. Aviso Histórico Vencto. Pagto. Bem VL. Créd Vl. Devido Vl. Pago Multa Juros Seguro % Pago % Difer
+001 81751685 001-0 RECBTO. PARCELA 09/02/2026 19/01/2026 922TX R$ 21.063,00 R$ 718,30 R$ 718,31 R$ 0,00 R$ 0,00 R$ 30,34 2,5579% -0,0001%
+002 82965267 001-0 RECBTO. PARCELA 09/03/2026 07/04/2026 922TX R$ 21.063,00 R$ 718,30 R$ 738,95 R$ 13,76 R$ 6,88 R$ 30,34 2,5579% -0,0001%
+003 82967058 001-0 RECBTO. PARCELA 07/04/2026 07/04/2026 922TX R$ 21.063,00 R$ 718,30 R$ 718,31 R$ 0,00 R$ 0,00 R$ 30,34 2,5579% -0,0001%
+004 83494943 001-0 RECBTO. PARCELA 07/05/2026 07/05/2026 922TX R$ 21.063,00 R$ 718,30 R$ 718,31 R$ 0,00 R$ 0,00 R$ 30,34 2,5579% -0,0001%
+006 84576893 001-0 RECBTO. PARCELA 07/07/2026 07/07/2026 922TX R$ 21.139,00 R$ 743,16 R$ 743,16 R$ 0,00 R$ 0,00 R$ 30,45 2,6403% 0,0000%
+007 85132735 001-0 RECBTO. PARCELA 07/08/2026 07/08/2026 922TX R$ 21.351,00 R$ 750,61 R$ 750,52 R$ 0,00 R$ 0,00 R$ 30,76 2,6400% 0,0003%
+(*) Movimento não apropriado TOTAIS R$ 4.366,97 R$ 4.387,56 R$ 13,76 R$ 6,88 R$ 182,57 15,5119% -0,0001%
+Pendência
+Ass. Aviso Histórico Vencto. Bem Vl. Crédito Vl. Parcela Multa Juros Seguro % Normal
+007 045286544 130 RECBTO LANCE DILUIDO 18/08/2026 922TX R$ 21.351,00 R$ 4.797,45 R$ 0,00 R$ 0,00 R$ 0,00 0,0000%
+007 045286545 140 DEBITO LANCE DILUIDO 18/08/2026 922TX R$ 21.351,00 R$ 3.202,65 R$ 0,00 R$ 0,00 R$ 0,00 0,0000%
+007 045218664 330 RECBTO. MULTAS/JUROS 07/08/2026 922TX R$ 21.351,00 R$ 20,71 R$ 0,00 R$ 0,00 R$ 0,00 0,0000%
+TOTAIS: R$ 8.020,81 0,0000%
+Valores / Percentuais Pagos
+Fundo Comum: R$ 3.276,84 15,5119%
+Fundo de Reserva: R$ 0,00 0,0000%
+Taxa de Administração: R$ 907,51 4,2959%
+Adesão(-): R$ 0,00 0,0000%
+Seguros: R$ 182,57
+Multas: R$ 13,76
+Juros: R$ 6,88
+Outros Valores: R$ 0,00
+TOTAL R$ 4.387,56 19,8078%
+Valores / Percentuais a Pagar
+Fundo Comum: R$ 18.039,07 84,4882%
+Fundo de Reserva: R$ 0,00 0,0000%
+Taxa de Administração: R$ 2.925,95 13,7040%
+Adesão: R$ 0,00 0,0000%
+Seguros: R$ 0,00 0,0000%
+Multas: R$ 0,00 0,0000%
+Juros: R$ 0,00 0,0000%
+Outros Valores: R$ 0,00 0,0000%
+Diferença de Parcela: R$ 0,00 0,0000%
+TOTAL R$ 20.965,02 98,1922%
+Resumo Parcelas a Pagar
+Qtde Total: 29,00 Qtde Furo: 0,00
+Resumo Parcelas Pagas
+Qtde Total: 006 Em Atraso: 1 a 30 dias: 001 16,6667%
+31 a 60 dias: 000 0,0000%
+Mais de 60 dias: 000 0,0000%
+Qtde Total Atraso: 001 16,6667%
+Diferença Grupo
+Quantidade de Parcelas: 4
+Percentual de Diferença: 8,3526%
+Histograma:
+....5...10...15...20...25...30...35...40...45...50...55...60...65...70...75...80...85...90...95..100..105..110..115..120
+PPPPIPP-----------------------------
+ - Parcela em Aberto; I Rateio Percentual Ideal; P Parcela Paga
+Negociações
+Percentual Ideal/Rateado - 07/07/2026
+(*) Negociação Pendente

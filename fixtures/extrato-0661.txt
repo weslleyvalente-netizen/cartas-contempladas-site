@@ -1,0 +1,104 @@
+0101 YAMAHA ADM DE CONSORCIO LTDA 14/08/2026 00:47:30
+Extrato do Consorciado - Extrato Atualizado Ouvidoria: 008007749000
+Ouvidoria: 0 ()
+Grupo: 009554 Cota: 0661-00 MOTO E TRILHA COMERCIO DE VEICULOS ME LTDA Contrato: 102043112
+Dados Cadastrais
+Pessoa: Jurídica Data Nascimento: 17/10/2011
+CPF/CNPJ: 14.469.113/0001-45 Documento: 105161934 Profissão: Comercial
+Endereço de Correspondência
+Endereço: RUA 205 n°: SN Complemento: CEP: 73900000
+Bairro: AUGUSTO JOSE VALENTE II Cidade: POSSE UF: GO
+Cx. Postal: Telefone: 62 34813000 Ramal:
+Filiação
+Nome do pai: Nome da mãe:
+Dados do Plano
+Data Venda: 21/05/2026 Data Adesão: 20/05/2026 Tipo de Venda: SUPER GRUPO MA
+1ª Assembleia: 25/06/2026 010 Taxa Adm: 7,5000% Produto: 000004AUTOMÓVE
+Plano Básico: 36 meses Fundo Reserva: 0,0000% SubProduto: 000004AUTOMÓVE
+Prazo do grupo: 42 meses % Mensal do Fundo Comum: 1,7911% Último reajuste em:
+Plano de Seguro: 000008NOVO - MOTO (VIDA & SQG) % Mensal c/ Taxas: 2,0567%
+Seguradora: 001MAPFRE SEGUROS GERAIS% Cob. Contemp: 0,0000%
+Assembleia Atual: 25/08/2026 012 Vencimento: 20/08/2026 Local: YAMAHA ADM DE CONSORCIO LTDA
+Filial de Venda: 000019 GOIAS - GO Ponto de Venda: 008121 MOTO E TRILHA COMERCIO DE VEICULOS 
+Filial Adm.: 000003 YAMAHA ADM. DE CONSORCIO LTDA. Comissionado: 008121 MOTO E TRILHA COMERCIO DE VEICULOS 
+Convênio: 000000
+000080
+00
+PARCEIROS COMERCIAIS
+Sit. de Cobrança: NORMAL Data Última Sit.: 21/05/2026 10:35:17
+Bem: 1116TX 50% - MOBI TREKKING 1.0 FLEX 5P. Valor Crédito: R$ 40.315,00
+Data prevista para o encerramento: 26/02/2029 Data do último vencimento: 20/03/2029
+Contemplação
+Dt. Contemplação: 23/07/2026 Crédito: R$ 40.315,00
+Tipo Contempl.: Lance 18 pcls. Crédito Corrigido: R$ 40.543,71
+Data do Pagamento: Valor Bem Entregue: R$ 6.047,25
+Entrega Docum.: Liquido à Pagar: R$ 34.496,46
+Percentuais
+Pago
+% Normal: 5,8833%
+% Antecipado: 49,8638%
+Pendente
+0,0000%
+A cobrar
+44,2529%
+Total
+50,1362%
+49,8638%
+% Mensal do Fundo Comum: 1,7911%
+Ideal Pago: 55,7462%
+Diferença: -0,0009%
+Contribuição Mensal
+% Seguro: 0,1313%
+TOTAL 55,7471% 0,0000% 44,2529% 100,0000% Ideal Devido: 44,2538% Valor Contrib. Mensal: R$ 829,14
+Conta Corrente
+Ass. Aviso Histórico Vencto. Pagto. Bem VL. Créd Vl. Devido Vl. Pago Multa Juros Seguro % Pago % Difer
+001 83799614 001-0 RECBTO. PARCELA 22/06/2026 20/05/2026 1116TX R$ 40.315,00 R$ 1.327,59 R$ 1.327,99 R$ 0,00 R$ 0,00 R$ 52,92 2,9421% -0,0009%
+001 84391665 017-0 RECBTO. ANTECIPADO22/06/2026 24/06/2026 1116TX R$ 40.315,00 R$ 9.295,93 R$ 9.295,93 R$ 0,00 R$ 0,00 R$ 0,00 21,4499% 0,0000%
+002 84845534 001-0 RECBTO. PARCELA 20/07/2026 20/07/2026 1116TX R$ 40.315,00 R$ 1.327,59 R$ 1.327,59 R$ 0,00 R$ 0,00 R$ 52,92 2,9412% 0,0000%
+000 85086697 013-0 RECBTO LANCE DILUIDO05/08/2026 05/08/2026 1116TX R$ 40.315,00 R$ 6.267,00 R$ 6.267,00 R$ 0,00 R$ 0,00 R$ 0,00 14,4605% 0,0000%
+000 85091128 014-0 DEBITO LANCE DILUIDO05/08/2026 05/08/2026 1116TX R$ 40.315,00 R$ 6.047,25 R$ 6.047,25 R$ 0,00 R$ 0,00 R$ 0,00 13,9534% 0,0000%
+(*) Movimento não apropriado TOTAIS R$ 24.265,36 R$ 24.265,76 R$ 0,00 R$ 0,00 R$ 105,84 55,7471% -0,0009%
+Pendência
+Ass. Aviso Histórico Vencto. Bem Vl. Crédito Vl. Parcela Multa Juros Seguro % Normal
+003 (PARCELA) 10 RECBTO. PARCELA 20/08/2026 1116TX R$ 40.315,00 R$ 829,14 R$ 0,00 R$ 0,00 R$ 52,92 1,7911%
+TOTAIS: R$ 829,14 1,7911%
+Valores / Percentuais Pagos
+Fundo Comum: R$ 22.474,44 55,7471%
+Fundo de Reserva: R$ 0,00 0,0000%
+Taxa de Administração: R$ 1.685,48 4,1810%
+Adesão(-): R$ 0,00 0,0000%
+Seguros: R$ 105,84
+Multas: R$ 0,00
+Juros: R$ 0,00
+Outros Valores: R$ 0,00
+TOTAL R$ 24.265,76 59,9281%
+Valores / Percentuais a Pagar
+Fundo Comum: R$ 17.840,92 44,2538%
+Fundo de Reserva: R$ 0,00 0,0000%
+Taxa de Administração: R$ 1.338,10 3,3191%
+Adesão: R$ 0,00 0,0000%
+Seguros: R$ 0,00 0,0000%
+Multas: R$ 0,00 0,0000%
+Juros: R$ 0,00 0,0000%
+Outros Valores: R$ 0,00 0,0000%
+Diferença de Parcela: R$ -0,40 -0,0010%
+TOTAL R$ 19.178,62 47,5719%
+Resumo Parcelas a Pagar
+Qtde Total: 25,00 Qtde Furo: 0,00
+Resumo Parcelas Pagas
+Qtde Total: 009 Em Atraso: 1 a 30 dias: 000 0,0000%
+31 a 60 dias: 000 0,0000%
+Mais de 60 dias: 000 0,0000%
+Qtde Total Atraso: 000 0,0000%
+Diferença Grupo
+Quantidade de Parcelas: 7
+Percentual de Diferença: 7,9639%
+Histograma:
+....5...10...15...20...25...30...35...40...45...50...55...60...65...70...75...80...85...90...95..100..105..110..115..120
+PP-------------------------AAAAAAAII
+ - Parcela em Aberto; A Parcela Antecipada; I Rateio Percentual Ideal; P Parcela Paga
+Negociações
+Percentual Ideal/Rateado - 21/05/2026
+Lance diluído/Rateado - 06/08/2026
+Lance diluído/Rateado - 06/08/2026
+(*) Negociação Pendente
