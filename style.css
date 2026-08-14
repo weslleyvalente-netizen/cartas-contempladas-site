@@ -354,3 +354,123 @@ option {
     background: var(--color-cream-100);
     color: var(--color-text);
 }
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+}
+
+.admin-header > div {
+    display: flex;
+    gap: 10px;
+}
+
+.admin-login-box {
+    max-width: 380px;
+    margin: 80px auto;
+    background: var(--color-cream-100);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 30px;
+}
+
+.admin-login-box h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.admin-login-box label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    margin-top: 15px;
+}
+
+.admin-login-box input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-size: 14px;
+    background: var(--color-cream-50);
+    color: var(--color-text);
+}
+
+.admin-error {
+    display: none;
+    background: oklch(55% .22 25 / 15%);
+    border: 1px solid var(--color-red-500);
+    color: var(--color-text);
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin: 15px 0;
+    font-size: 14px;
+}
+
+.admin-section {
+    background: var(--color-cream-100);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.admin-section h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.admin-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.admin-form-box {
+    background: var(--color-cream-50);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.admin-table-wrap {
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.admin-table th,
+.admin-table td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--color-border-subtle);
+    white-space: nowrap;
+}
+
+.admin-table th {
+    color: var(--color-slate-500);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.admin-table input[type="text"],
+.admin-table input[type="number"] {
+    padding: 6px 8px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-cream-50);
+    color: var(--color-text);
+    font-size: 13px;
+}
+

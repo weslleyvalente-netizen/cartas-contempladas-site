@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Moto e Trilha Cartas Contempladas</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container" id="loginContainer">
+        <div class="admin-login-box">
+            <h1>🔐 Admin - Cartas Contempladas</h1>
+            <form id="loginForm">
+                <label>Email</label>
+                <input type="email" id="loginEmail" required>
+                <label>Senha</label>
+                <input type="password" id="loginPassword" required>
+                <div id="loginError" class="admin-error"></div>
+                <button type="submit" class="btn btn-primary" style="width:100%; margin-top: 15px;">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container" id="appContainer" style="display:none;">
+        <div class="header admin-header">
+            <h1>🔐 Admin - Cartas Contempladas</h1>
+            <div>
+                <a href="/" class="btn btn-clear">Ver Site</a>
+                <button class="btn btn-clear" id="logoutBtn">Sair</button>
+            </div>
+        </div>
+
+        <div id="adminError" class="admin-error"></div>
+
+        <div class="admin-section">
+            <div class="admin-section-header">
+                <h2>Cartas Próprias</h2>
+                <button class="btn btn-primary" id="novaCartaPropriaBtn">+ Nova Carta</button>
+            </div>
+            <div id="cartaPropriaFormBox" style="display:none;" class="admin-form-box">
+                <form id="cartaPropriaForm">
+                    <input type="hidden" id="cartaPropriaId">
+                    <div class="filter-grid">
+                        <div class="filter-group">
+                            <label>Administradora</label>
+                            <input type="text" id="cpAdministradora" required>
+                        </div>
+                        <div class="filter-group">
+                            <label>Tipo</label>
+                            <select id="cpTipo">
+                                <option value="moto">Moto</option>
+                                <option value="carro">Carro</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Crédito (R$)</label>
+                            <input type="number" step="0.01" id="cpCredito" required>
+                        </div>
+                        <div class="filter-group">
+                            <label>Entrada (R$)</label>
+                            <input type="number" step="0.01" id="cpEntrada" required>
+                        </div>
+                        <div class="filter-group">
+                            <label>Nº Parcelas</label>
+                            <input type="number" id="cpPrazo" required>
+                        </div>
+                        <div class="filter-group">
+                            <label>Valor Parcela (R$)</label>
+                            <input type="number" step="0.01" id="cpParcela" required>
+                        </div>
+                        <div class="filter-group">
+                            <label>Vencimento</label>
+                            <input type="date" id="cpVencimento" required>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:10px; margin-top: 15px;">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <button type="button" class="btn btn-clear" id="cancelarCartaPropriaBtn">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+            <div class="admin-table-wrap">
+                <table class="admin-table" id="cartasPropriasTable">
+                    <thead>
+                        <tr><th>Administradora</th><th>Tipo</th><th>Crédito</th><th>Entrada</th><th>Parcelas</th><th>Venc.</th><th></th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <h2>Cartas de Parceiros</h2>
+            <div class="admin-table-wrap">
+                <table class="admin-table" id="cartasParceirosTable">
+                    <thead>
+                        <tr><th>Parceiro</th><th>Código</th><th>Crédito</th><th>Entrada</th><th>Parcelas</th><th>Venc.</th><th>Ágio (R$)</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <h2>Parceiros</h2>
+            <div class="admin-table-wrap">
+                <table class="admin-table" id="parceirosTable">
+                    <thead>
+                        <tr><th>Nome</th><th>Link</th><th>Ágio Padrão (R$)</th><th>Status</th><th></th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <h2>Configurações</h2>
+            <div class="filter-group" style="max-width: 300px;">
+                <label>Ágio Padrão Global (R$)</label>
+                <input type="number" step="0.01" id="agioPadraoGlobalInput">
+            </div>
+            <button class="btn btn-primary" id="salvarConfigBtn" style="margin-top:10px;">Salvar</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
