@@ -188,11 +188,12 @@ create policy parceiros_admin_all on public.parceiros
   for all to authenticated
   using (public.is_admin()) with check (public.is_admin());
 
--- cartas_parceiros: anon reads everything (site applies the ativo filter
--- client-side via the parceiros join); admin can read all columns but can
--- only ever WRITE the `agio` column — insert/delete stay reserved for the
--- cartas-sync robot, which uses the service_role key and bypasses RLS
--- entirely, so no policy is needed for it.
+-- cartas_parceiros: anon reads everything EXCEPT reservada_por/vendida_em
+-- (site applies the ativo filter client-side via the parceiros join);
+-- admin can read all columns but can only ever WRITE the `agio`,
+-- `reservada_por`, `vendida_em` columns — insert/delete stay reserved for
+-- the cartas-sync robot, which uses the service_role key and bypasses
+-- RLS entirely, so no policy is needed for it.
 create policy cartas_parceiros_public_read on public.cartas_parceiros
   for select to anon using (true);
 
@@ -207,9 +208,16 @@ revoke update on public.cartas_parceiros from authenticated;
 grant select on public.cartas_parceiros to authenticated;
 grant update (agio, reservada_por, vendida_em) on public.cartas_parceiros to authenticated;
 
--- cartas_proprias: anon reads everything, admin has full CRUD.
+revoke select on public.cartas_parceiros from anon;
+grant select (id, parceiro_id, codigo, administradora, tipo, credito, entrada, agio, prazo, parcela, vencimento, numero_sequencial, created_at, updated_at) on public.cartas_parceiros to anon;
+
+-- cartas_proprias: anon reads everything EXCEPT reservada_por/vendida_em
+-- (customer names and sale status are not public data), admin has full CRUD.
 create policy cartas_proprias_public_read on public.cartas_proprias
   for select to anon using (true);
+
+revoke select on public.cartas_proprias from anon;
+grant select (id, administradora, grupo, cota, tipo, credito, entrada, prazo, parcela, vencimento, numero_sequencial, created_at, updated_at) on public.cartas_proprias to anon;
 
 create policy cartas_proprias_admin_all on public.cartas_proprias
   for all to authenticated

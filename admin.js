@@ -11,7 +11,7 @@ function mostrarErro(el, mensagem) {
 function escaparHtml(texto) {
     const div = document.createElement('div');
     div.textContent = String(texto);
-    return div.innerHTML;
+    return div.innerHTML.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
 function formatarMoedaAdmin(valor) {
@@ -116,7 +116,7 @@ async function confirmarVendaPropria(id) {
         return;
     }
     carregarCartasProprias();
-    if (typeof carregarCartasVendidas === 'function') carregarCartasVendidas();
+    carregarCartasVendidas();
 }
 
 function limparEstadoImportacao() {
@@ -309,7 +309,7 @@ async function confirmarVendaParceiro(id) {
         return;
     }
     carregarCartasParceiros();
-    if (typeof carregarCartasVendidas === 'function') carregarCartasVendidas();
+    carregarCartasVendidas();
 }
 
 // ---- Cartas Vendidas ----
@@ -333,9 +333,9 @@ async function carregarCartasVendidas() {
     const tbody = document.querySelector('#cartasVendidasTable tbody');
     tbody.innerHTML = vendidas.map((v) => `
         <tr>
-            <td>${formatarNumeroCarta(v.id)}</td>
+            <td>${formatarNumeroCarta(v.numero)}</td>
             <td>${v.origem === 'propria' ? 'Própria' : escaparHtml(v.origem)}</td>
-            <td>${v.administradora}</td>
+            <td>${escaparHtml(v.administradora)}</td>
             <td>${escaparHtml(v.identificacao)}</td>
             <td>${v.tipo}</td>
             <td>${formatarMoedaAdmin(v.credito)}</td>

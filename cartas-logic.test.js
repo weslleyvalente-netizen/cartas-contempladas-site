@@ -142,7 +142,7 @@ describe('mesclarVendidas', () => {
     ];
     const resultado = mesclarVendidas({ cartasProprias, cartasParceiros: [], parceiros });
     expect(resultado).toHaveLength(1);
-    expect(resultado[0].id).toBe(2);
+    expect(resultado[0].numero).toBe(2);
     expect(resultado[0].dbId).toBe(5);
     expect(resultado[0].tabela).toBe('cartas_proprias');
     expect(resultado[0].origem).toBe('propria');
@@ -157,7 +157,7 @@ describe('mesclarVendidas', () => {
     ];
     const resultado = mesclarVendidas({ cartasProprias: [], cartasParceiros, parceiros });
     expect(resultado).toHaveLength(1);
-    expect(resultado[0].id).toBe(300);
+    expect(resultado[0].numero).toBe(300);
     expect(resultado[0].dbId).toBe(30);
     expect(resultado[0].tabela).toBe('cartas_parceiros');
     expect(resultado[0].origem).toBe('Parceiro Principal');

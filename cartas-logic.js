@@ -64,7 +64,7 @@ function mesclarVendidas({ cartasProprias, cartasParceiros, parceiros }) {
   const doProprias = cartasProprias
     .filter((c) => c.vendida_em)
     .map((c) => ({
-      id: c.numero_sequencial,
+      numero: c.numero_sequencial,
       dbId: c.id,
       tabela: 'cartas_proprias',
       origem: 'propria',
@@ -85,7 +85,7 @@ function mesclarVendidas({ cartasProprias, cartasParceiros, parceiros }) {
     .map((c) => {
       const parceiro = parceirosPorId.get(c.parceiro_id);
       return {
-        id: c.numero_sequencial,
+        numero: c.numero_sequencial,
         dbId: c.id,
         tabela: 'cartas_parceiros',
         origem: parceiro ? parceiro.nome : 'Parceiro',

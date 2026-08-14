@@ -27,8 +27,8 @@
             try {
                 const [parceirosRes, cartasParceirosRes, cartasPropriasRes, configRes] = await Promise.all([
                     supabaseClient.from('parceiros').select('*'),
-                    supabaseClient.from('cartas_parceiros').select('*'),
-                    supabaseClient.from('cartas_proprias').select('*'),
+                    supabaseClient.from('cartas_parceiros').select('id, parceiro_id, administradora, credito, entrada, agio, prazo, parcela, vencimento, numero_sequencial'),
+                    supabaseClient.from('cartas_proprias').select('id, administradora, credito, entrada, prazo, parcela, vencimento, numero_sequencial'),
                     supabaseClient.from('configuracoes').select('*').eq('chave', 'agio_padrao').maybeSingle()
                 ]);
 
