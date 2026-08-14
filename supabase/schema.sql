@@ -28,7 +28,7 @@ create table public.parceiros (
   nome text not null unique,
   link text,
   agio_padrao numeric(12,2),
-  faixa_inicial int not null,
+  faixa_inicial int not null unique,
   ativo boolean not null default true,
   created_at timestamptz not null default now()
 );
@@ -134,6 +134,10 @@ begin
       from public.cartas_parceiros
       where parceiro_id = new.parceiro_id
         and date_trunc('month', created_at) = mes_atual;
+  end if;
+
+  if faixa is null then
+    raise exception 'faixa_inicial não configurada para esta origem (tabela=%, parceiro_id=%)', TG_TABLE_NAME, new.parceiro_id;
   end if;
 
   new.numero_sequencial := greatest(max_atual + 1, faixa);

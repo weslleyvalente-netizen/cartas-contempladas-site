@@ -9,13 +9,16 @@ function formatarDataISOParaBR(isoDate) {
   return `${dia}/${mes}/${ano}`;
 }
 
+const ID_OFFSET_PROPRIAS = 1000000000;
+
 function mesclarCartas({ cartasParceiros, parceiros, cartasProprias, agioPadraoGlobal }) {
   const parceirosPorId = new Map(parceiros.map((p) => [p.id, p]));
 
   const doProprias = cartasProprias.map((c) => {
     const entrada = c.entrada;
     return {
-      id: c.numero_sequencial,
+      id: c.id + ID_OFFSET_PROPRIAS,
+      numero: c.numero_sequencial,
       origem: 'propria',
       credito: c.credito,
       entrada,
@@ -37,7 +40,8 @@ function mesclarCartas({ cartasParceiros, parceiros, cartasProprias, agioPadraoG
       const agio = resolverAgio(c, parceiro, agioPadraoGlobal);
       const entrada = c.entrada + agio;
       return {
-        id: c.numero_sequencial,
+        id: c.id,
+        numero: c.numero_sequencial,
         origem: 'parceiro',
         credito: c.credito,
         entrada,
@@ -53,5 +57,5 @@ function mesclarCartas({ cartasParceiros, parceiros, cartasProprias, agioPadraoG
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { resolverAgio, formatarDataISOParaBR, mesclarCartas };
+  module.exports = { resolverAgio, formatarDataISOParaBR, mesclarCartas, ID_OFFSET_PROPRIAS };
 }

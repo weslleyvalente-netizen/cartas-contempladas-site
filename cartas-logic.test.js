@@ -1,4 +1,4 @@
-const { resolverAgio, formatarDataISOParaBR, mesclarCartas } = require('./cartas-logic.js');
+const { resolverAgio, formatarDataISOParaBR, mesclarCartas, ID_OFFSET_PROPRIAS } = require('./cartas-logic.js');
 
 describe('resolverAgio', () => {
   it('usa o ágio da própria carta quando definido', () => {
@@ -32,14 +32,15 @@ describe('mesclarCartas', () => {
     { id: 2, nome: 'Jorge Consórcios', ativo: false, agio_padrao: 200 }
   ];
 
-  it('aplica o ágio à entrada das cartas de parceiros ativos, com origem parceiro', () => {
+  it('aplica o ágio à entrada das cartas de parceiros ativos, com id único e numero de exibição separado', () => {
     const cartasParceiros = [
       { id: 10, numero_sequencial: 307, parceiro_id: 1, credito: 20000, entrada: 9000, agio: null, prazo: 30, parcela: 500, vencimento: '20/08/2026', administradora: 'YAMAHA' }
     ];
     const resultado = mesclarCartas({ cartasParceiros, parceiros, cartasProprias: [], agioPadraoGlobal: 400 });
     expect(resultado).toHaveLength(1);
     expect(resultado[0].entrada).toBe(9400);
-    expect(resultado[0].id).toBe(307);
+    expect(resultado[0].id).toBe(10);
+    expect(resultado[0].numero).toBe(307);
     expect(resultado[0].origem).toBe('parceiro');
     expect(resultado[0].vencimento).toBe(20);
   });
@@ -52,14 +53,15 @@ describe('mesclarCartas', () => {
     expect(resultado).toHaveLength(0);
   });
 
-  it('inclui cartas próprias sem ágio, com numero_sequencial como id, origem propria e data formatada', () => {
+  it('inclui cartas próprias sem ágio, com id deslocado, numero de exibição e data formatada', () => {
     const cartasProprias = [
       { id: 5, numero_sequencial: 3, credito: 30000, entrada: 15000, prazo: 24, parcela: 1200, vencimento: '2026-09-12', administradora: 'HONDA' }
     ];
     const resultado = mesclarCartas({ cartasParceiros: [], parceiros, cartasProprias, agioPadraoGlobal: 400 });
     expect(resultado).toHaveLength(1);
     expect(resultado[0].entrada).toBe(15000);
-    expect(resultado[0].id).toBe(3);
+    expect(resultado[0].id).toBe(5 + ID_OFFSET_PROPRIAS);
+    expect(resultado[0].numero).toBe(3);
     expect(resultado[0].origem).toBe('propria');
     expect(resultado[0].vencimento).toBe(12);
   });
@@ -81,9 +83,24 @@ describe('mesclarCartas', () => {
     ];
     const resultado = mesclarCartas({ cartasParceiros, parceiros, cartasProprias, agioPadraoGlobal: 0 });
     expect(resultado).toHaveLength(2);
-    expect(resultado[0].id).toBe(2);
+    expect(resultado[0].id).toBe(9 + ID_OFFSET_PROPRIAS);
+    expect(resultado[0].numero).toBe(2);
     expect(resultado[0].origem).toBe('propria');
-    expect(resultado[1].id).toBe(300);
+    expect(resultado[1].id).toBe(20);
+    expect(resultado[1].numero).toBe(300);
     expect(resultado[1].origem).toBe('parceiro');
+  });
+
+  it('gera ids diferentes para cartas de origens diferentes que compartilham o mesmo numero_sequencial (regressão do bug de colisão)', () => {
+    const cartasParceiros = [
+      { id: 30, numero_sequencial: 1, parceiro_id: 1, credito: 20000, entrada: 9000, agio: null, prazo: 30, parcela: 500, vencimento: '20/08/2026', administradora: 'YAMAHA' }
+    ];
+    const cartasProprias = [
+      { id: 1, numero_sequencial: 1, credito: 30000, entrada: 15000, prazo: 24, parcela: 1200, vencimento: '2026-09-12', administradora: 'HONDA' }
+    ];
+    const resultado = mesclarCartas({ cartasParceiros, parceiros, cartasProprias, agioPadraoGlobal: 0 });
+    expect(resultado[0].numero).toBe(1);
+    expect(resultado[1].numero).toBe(1);
+    expect(resultado[0].id).not.toBe(resultado[1].id);
   });
 });
