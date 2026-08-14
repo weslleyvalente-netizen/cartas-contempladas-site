@@ -64,10 +64,17 @@ create trigger cartas_parceiros_set_updated_at
   before update on public.cartas_parceiros
   for each row execute function public.set_updated_at();
 
+-- NOTE: this table already exists in the live Supabase project (from the
+-- previous cartas-admin plan). Adding grupo/cota to a live database is a
+-- separate ALTER TABLE, run by hand during deployment — see Task 5 of the
+-- 2026-08-14-cartas-pdf-import plan. This CREATE TABLE definition only
+-- matters for a fresh install of this schema.
 -- Store's own cards, full CRUD via admin.
 create table public.cartas_proprias (
   id bigint generated always as identity primary key,
   administradora text not null,
+  grupo text,
+  cota text,
   tipo text not null default 'moto' check (tipo in ('moto','carro')),
   credito numeric(12,2) not null,
   entrada numeric(12,2) not null,
