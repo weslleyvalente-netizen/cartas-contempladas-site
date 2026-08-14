@@ -1,6 +1,9 @@
 -- Reused across this Supabase project (also used by catalogo-motos-site).
--- Safe to re-run: create or replace keeps the existing admin email intact
--- as long as the same value is used everywhere this file is applied.
+-- ⚠️ Substitute SEU_EMAIL_AQUI@exemplo.com below with the real admin email
+-- BEFORE running this file — exactly as already done for catalogo-motos-site
+-- in this same Supabase project. Pasting this file with the placeholder
+-- still in place will overwrite the shared is_admin() function and lock
+-- the real admin out of BOTH admin panels.
 create or replace function public.is_admin()
 returns boolean
 language sql
@@ -35,9 +38,9 @@ insert into public.parceiros (nome) values
 on conflict (nome) do nothing;
 
 -- Cards scraped from partners by the cartas-sync robot.
--- vencimento is stored as raw "DD/MM/YYYY" text (exactly as scraped) so the
--- public site's existing parseInt(carta.vencimento) day-extraction keeps
--- working unchanged — see cartas-logic.js.
+-- vencimento is stored as raw "DD/MM/YYYY" text (exactly as scraped) so
+-- cartas-logic.js's mesclarCartas() can keep doing its
+-- parseInt(c.vencimento, 10) day-extraction unchanged.
 create table public.cartas_parceiros (
   id bigint generated always as identity primary key,
   parceiro_id bigint not null references public.parceiros(id) on delete cascade,
@@ -49,9 +52,10 @@ create table public.cartas_parceiros (
   agio numeric(12,2),
   prazo int not null,
   parcela numeric(12,2) not null,
-  vencimento text not null,
+  vencimento text not null check (vencimento ~ '^\d{2}/\d{2}/\d{4}$'),
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  unique (parceiro_id, codigo)
 );
 
 create index cartas_parceiros_parceiro_id_idx on public.cartas_parceiros (parceiro_id);

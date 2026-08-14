@@ -29,7 +29,7 @@ function mesclarCartas({ cartasParceiros, parceiros, cartasProprias, agioPadraoG
         entrada,
         prazo: c.prazo,
         parcela: c.parcela,
-        vencimento: c.vencimento,
+        vencimento: parseInt(c.vencimento, 10),
         administradora: c.administradora,
         entrada_baixa: c.credito > 0 && entrada / c.credito < 0.3
       };
@@ -43,7 +43,7 @@ function mesclarCartas({ cartasParceiros, parceiros, cartasProprias, agioPadraoG
       entrada,
       prazo: c.prazo,
       parcela: c.parcela,
-      vencimento: formatarDataISOParaBR(c.vencimento),
+      vencimento: parseInt(c.vencimento.split('-')[2], 10),
       administradora: c.administradora,
       entrada_baixa: c.credito > 0 && entrada / c.credito < 0.3
     };

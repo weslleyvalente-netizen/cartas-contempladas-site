@@ -29,7 +29,7 @@
                     supabaseClient.from('parceiros').select('*'),
                     supabaseClient.from('cartas_parceiros').select('*'),
                     supabaseClient.from('cartas_proprias').select('*'),
-                    supabaseClient.from('configuracoes').select('*').eq('chave', 'agio_padrao').single()
+                    supabaseClient.from('configuracoes').select('*').eq('chave', 'agio_padrao').maybeSingle()
                 ]);
 
                 if (parceirosRes.error) throw parceirosRes.error;
@@ -37,11 +37,13 @@
                 if (cartasPropriasRes.error) throw cartasPropriasRes.error;
                 if (configRes.error) throw configRes.error;
 
+                const agioPadraoGlobal = configRes.data ? (parseFloat(configRes.data.valor) || 0) : 0;
+
                 cartas = mesclarCartas({
                     cartasParceiros: cartasParceirosRes.data,
                     parceiros: parceirosRes.data,
                     cartasProprias: cartasPropriasRes.data,
-                    agioPadraoGlobal: parseFloat(configRes.data.valor) || 0
+                    agioPadraoGlobal
                 });
 
                 document.getElementById('statusText').innerHTML = `${cartas.length} cotas ✅ Online`;

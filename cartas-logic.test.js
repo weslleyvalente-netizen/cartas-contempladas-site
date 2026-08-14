@@ -40,6 +40,7 @@ describe('mesclarCartas', () => {
     expect(resultado).toHaveLength(1);
     expect(resultado[0].entrada).toBe(9400);
     expect(resultado[0].id).toBe(10);
+    expect(resultado[0].vencimento).toBe(20);
   });
 
   it('omite cartas de parceiros desligados (ativo=false)', () => {
@@ -58,7 +59,7 @@ describe('mesclarCartas', () => {
     expect(resultado).toHaveLength(1);
     expect(resultado[0].entrada).toBe(15000);
     expect(resultado[0].id).toBe(5 + ID_OFFSET_PROPRIAS);
-    expect(resultado[0].vencimento).toBe('12/09/2026');
+    expect(resultado[0].vencimento).toBe(12);
   });
 
   it('marca entrada_baixa quando entrada/credito < 0.3', () => {

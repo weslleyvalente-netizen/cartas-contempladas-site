@@ -8,6 +8,12 @@ function mostrarErro(el, mensagem) {
     el.style.display = mensagem ? 'block' : 'none';
 }
 
+function escaparHtml(texto) {
+    const div = document.createElement('div');
+    div.textContent = String(texto);
+    return div.innerHTML;
+}
+
 function formatarMoedaAdmin(valor) {
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
 }
@@ -158,11 +164,11 @@ async function carregarCartasParceiros() {
     tbody.innerHTML = data.map((c) => `
         <tr>
             <td>${c.parceiros ? c.parceiros.nome : ''}</td>
-            <td>${c.codigo}</td>
+            <td>${escaparHtml(c.codigo)}</td>
             <td>${formatarMoedaAdmin(c.credito)}</td>
             <td>${formatarMoedaAdmin(c.entrada)}</td>
             <td>${c.prazo}x ${formatarMoedaAdmin(c.parcela)}</td>
-            <td>${c.vencimento}</td>
+            <td>${escaparHtml(c.vencimento)}</td>
             <td>
                 <input type="number" step="0.01" value="${c.agio ?? ''}" placeholder="padrão"
                        style="width: 100px;"
