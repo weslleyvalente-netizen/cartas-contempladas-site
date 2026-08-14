@@ -62,6 +62,7 @@ async function carregarTudo() {
         carregarParceiros(),
         carregarCartasProprias(),
         carregarCartasParceiros(),
+        carregarCartasVendidas(),
         carregarConfiguracoes()
     ]);
 }
@@ -309,6 +310,55 @@ async function confirmarVendaParceiro(id) {
     }
     carregarCartasParceiros();
     if (typeof carregarCartasVendidas === 'function') carregarCartasVendidas();
+}
+
+// ---- Cartas Vendidas ----
+
+async function carregarCartasVendidas() {
+    const [propriasRes, parceirosRes, parceirosListRes] = await Promise.all([
+        supabaseClient.from('cartas_proprias').select('*').not('vendida_em', 'is', null),
+        supabaseClient.from('cartas_parceiros').select('*').not('vendida_em', 'is', null),
+        supabaseClient.from('parceiros').select('*')
+    ]);
+    if (propriasRes.error || parceirosRes.error || parceirosListRes.error) {
+        const err = propriasRes.error || parceirosRes.error || parceirosListRes.error;
+        mostrarErro(adminError, 'Erro ao carregar cartas vendidas: ' + err.message);
+        return;
+    }
+    const vendidas = mesclarVendidas({
+        cartasProprias: propriasRes.data,
+        cartasParceiros: parceirosRes.data,
+        parceiros: parceirosListRes.data
+    });
+    const tbody = document.querySelector('#cartasVendidasTable tbody');
+    tbody.innerHTML = vendidas.map((v) => `
+        <tr>
+            <td>${formatarNumeroCarta(v.id)}</td>
+            <td>${v.origem === 'propria' ? 'Própria' : escaparHtml(v.origem)}</td>
+            <td>${v.administradora}</td>
+            <td>${escaparHtml(v.identificacao)}</td>
+            <td>${v.tipo}</td>
+            <td>${formatarMoedaAdmin(v.credito)}</td>
+            <td>${formatarMoedaAdmin(v.entrada)}</td>
+            <td>${v.prazo}x ${formatarMoedaAdmin(v.parcela)}</td>
+            <td>${escaparHtml(v.vencimento)}</td>
+            <td>${v.compradoPor ? escaparHtml(v.compradoPor) : ''}</td>
+            <td>${new Date(v.vendidaEm).toLocaleDateString('pt-BR')}</td>
+            <td><button class="btn btn-clear" onclick="desfazerVenda(${v.dbId}, '${v.tabela}')">↩️ Desfazer</button></td>
+        </tr>
+    `).join('');
+}
+
+async function desfazerVenda(dbId, tabela) {
+    if (!confirm('Desfazer esta venda? A carta volta a ficar disponível.')) return;
+    const { error } = await supabaseClient.from(tabela).update({ reservada_por: null, vendida_em: null }).eq('id', dbId);
+    if (error) {
+        mostrarErro(adminError, 'Erro ao desfazer venda: ' + error.message);
+        return;
+    }
+    carregarCartasProprias();
+    carregarCartasParceiros();
+    carregarCartasVendidas();
 }
 
 // ---- Parceiros ----
