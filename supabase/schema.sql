@@ -188,14 +188,17 @@ create policy parceiros_admin_all on public.parceiros
   for all to authenticated
   using (public.is_admin()) with check (public.is_admin());
 
--- cartas_parceiros: anon reads everything EXCEPT reservada_por/vendida_em
--- (site applies the ativo filter client-side via the parceiros join);
--- admin can read all columns but can only ever WRITE the `agio`,
--- `reservada_por`, `vendida_em` columns — insert/delete stay reserved for
--- the cartas-sync robot, which uses the service_role key and bypasses
--- RLS entirely, so no policy is needed for it.
+-- cartas_parceiros: anon reads only cartas that are neither reserved nor
+-- sold (row-level filter — the client never even receives a reserved/sold
+-- row, not just the reservada_por/vendida_em columns; the column-level
+-- grant below is defense in depth on top of this, since reservada_por
+-- holds a real customer name) and applies the ativo filter client-side
+-- via the parceiros join; admin can read all columns but can only ever
+-- WRITE the `agio`, `reservada_por`, `vendida_em` columns — insert/delete
+-- stay reserved for the cartas-sync robot, which uses the service_role
+-- key and bypasses RLS entirely, so no policy is needed for it.
 create policy cartas_parceiros_public_read on public.cartas_parceiros
-  for select to anon using (true);
+  for select to anon using (reservada_por is null and vendida_em is null);
 
 create policy cartas_parceiros_admin_read on public.cartas_parceiros
   for select to authenticated using (public.is_admin());
@@ -211,10 +214,11 @@ grant update (agio, reservada_por, vendida_em) on public.cartas_parceiros to aut
 revoke select on public.cartas_parceiros from anon;
 grant select (id, parceiro_id, codigo, administradora, tipo, credito, entrada, agio, prazo, parcela, vencimento, numero_sequencial, created_at, updated_at) on public.cartas_parceiros to anon;
 
--- cartas_proprias: anon reads everything EXCEPT reservada_por/vendida_em
--- (customer names and sale status are not public data), admin has full CRUD.
+-- cartas_proprias: anon reads only cartas that are neither reserved nor
+-- sold (row-level filter, same reasoning as cartas_parceiros above),
+-- admin has full CRUD.
 create policy cartas_proprias_public_read on public.cartas_proprias
-  for select to anon using (true);
+  for select to anon using (reservada_por is null and vendida_em is null);
 
 revoke select on public.cartas_proprias from anon;
 grant select (id, administradora, grupo, cota, tipo, credito, entrada, prazo, parcela, vencimento, numero_sequencial, created_at, updated_at) on public.cartas_proprias to anon;
