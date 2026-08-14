@@ -23,6 +23,10 @@ function formatarDataAdmin(isoDate) {
     return `${dia}/${mes}/${ano}`;
 }
 
+function formatarNumeroCarta(numero) {
+    return numero === null || numero === undefined ? '' : `#${String(numero).padStart(2, '0')}`;
+}
+
 async function verificarSessao() {
     const { data: { session } } = await supabaseClient.auth.getSession();
     if (session) {
@@ -77,6 +81,7 @@ async function carregarCartasProprias() {
     const tbody = document.querySelector('#cartasPropriasTable tbody');
     tbody.innerHTML = data.map((c) => `
         <tr>
+            <td>${formatarNumeroCarta(c.numero_sequencial)}</td>
             <td>${c.administradora}</td>
             <td>${c.grupo ? escaparHtml(c.grupo) : ''}${c.grupo && c.cota ? ' / ' : ''}${c.cota ? escaparHtml(c.cota) : ''}</td>
             <td>${c.tipo}</td>
@@ -242,6 +247,7 @@ async function carregarCartasParceiros() {
     const tbody = document.querySelector('#cartasParceirosTable tbody');
     tbody.innerHTML = data.map((c) => `
         <tr>
+            <td>${formatarNumeroCarta(c.numero_sequencial)}</td>
             <td>${c.parceiros ? c.parceiros.nome : ''}</td>
             <td>${escaparHtml(c.codigo)}</td>
             <td>${formatarMoedaAdmin(c.credito)}</td>
@@ -280,6 +286,9 @@ async function carregarParceiros() {
             <td><input type="number" step="0.01" value="${p.agio_padrao ?? ''}" placeholder="padrão global"
                        style="width: 100px;"
                        onchange="salvarAgioPadraoParceiro(${p.id}, this.value)"></td>
+            <td><input type="number" step="1" value="${p.faixa_inicial}"
+                       style="width: 100px;"
+                       onchange="salvarFaixaInicialParceiro(${p.id}, this.value)"></td>
             <td>${p.ativo ? '🟢 Ativo' : '🔴 Desligado'}</td>
             <td><button class="btn btn-clear" onclick="alternarParceiroAtivo(${p.id}, ${!p.ativo})">
                 ${p.ativo ? 'Desligar todas' : 'Religar'}
@@ -297,6 +306,17 @@ async function salvarAgioPadraoParceiro(id, valor) {
     const agio_padrao = valor === '' ? null : parseFloat(valor);
     const { error } = await supabaseClient.from('parceiros').update({ agio_padrao }).eq('id', id);
     if (error) mostrarErro(adminError, 'Erro ao salvar ágio padrão: ' + error.message);
+}
+
+async function salvarFaixaInicialParceiro(id, valor) {
+    const faixa_inicial = parseInt(valor, 10);
+    if (isNaN(faixa_inicial)) {
+        mostrarErro(adminError, 'Faixa inicial precisa ser um número.');
+        carregarParceiros();
+        return;
+    }
+    const { error } = await supabaseClient.from('parceiros').update({ faixa_inicial }).eq('id', id);
+    if (error) mostrarErro(adminError, 'Erro ao salvar faixa inicial: ' + error.message);
 }
 
 async function alternarParceiroAtivo(id, novoValor) {
