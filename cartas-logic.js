@@ -9,10 +9,23 @@ function formatarDataISOParaBR(isoDate) {
   return `${dia}/${mes}/${ano}`;
 }
 
-const ID_OFFSET_PROPRIAS = 1000000000;
-
 function mesclarCartas({ cartasParceiros, parceiros, cartasProprias, agioPadraoGlobal }) {
   const parceirosPorId = new Map(parceiros.map((p) => [p.id, p]));
+
+  const doProprias = cartasProprias.map((c) => {
+    const entrada = c.entrada;
+    return {
+      id: c.numero_sequencial,
+      origem: 'propria',
+      credito: c.credito,
+      entrada,
+      prazo: c.prazo,
+      parcela: c.parcela,
+      vencimento: parseInt(c.vencimento.split('-')[2], 10),
+      administradora: c.administradora,
+      entrada_baixa: c.credito > 0 && entrada / c.credito < 0.3
+    };
+  });
 
   const doParceiros = cartasParceiros
     .filter((c) => {
@@ -24,7 +37,8 @@ function mesclarCartas({ cartasParceiros, parceiros, cartasProprias, agioPadraoG
       const agio = resolverAgio(c, parceiro, agioPadraoGlobal);
       const entrada = c.entrada + agio;
       return {
-        id: c.id,
+        id: c.numero_sequencial,
+        origem: 'parceiro',
         credito: c.credito,
         entrada,
         prazo: c.prazo,
@@ -35,23 +49,9 @@ function mesclarCartas({ cartasParceiros, parceiros, cartasProprias, agioPadraoG
       };
     });
 
-  const doProprias = cartasProprias.map((c) => {
-    const entrada = c.entrada;
-    return {
-      id: c.id + ID_OFFSET_PROPRIAS,
-      credito: c.credito,
-      entrada,
-      prazo: c.prazo,
-      parcela: c.parcela,
-      vencimento: parseInt(c.vencimento.split('-')[2], 10),
-      administradora: c.administradora,
-      entrada_baixa: c.credito > 0 && entrada / c.credito < 0.3
-    };
-  });
-
-  return [...doParceiros, ...doProprias];
+  return [...doProprias, ...doParceiros];
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { resolverAgio, formatarDataISOParaBR, mesclarCartas, ID_OFFSET_PROPRIAS };
+  module.exports = { resolverAgio, formatarDataISOParaBR, mesclarCartas };
 }
