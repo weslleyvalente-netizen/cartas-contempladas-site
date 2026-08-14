@@ -39,14 +39,29 @@
             <div class="admin-section-header">
                 <h2>Cartas Próprias</h2>
                 <button class="btn btn-primary" id="novaCartaPropriaBtn">+ Nova Carta</button>
+                <button class="btn btn-clear" id="importarPdfBtn">📄 Importar de PDF</button>
+                <input type="file" id="importarPdfInput" accept="application/pdf">
             </div>
             <div id="cartaPropriaFormBox" style="display:none;" class="admin-form-box">
                 <form id="cartaPropriaForm">
+                    <div id="avisoLanceBox"></div>
+                    <div class="filter-group" id="agioDesejadoBox" style="display:none; max-width: 250px; margin-bottom: 15px;">
+                        <label>Ágio desejado (R$)</label>
+                        <input type="number" step="0.01" id="agioDesejadoInput" placeholder="0,00">
+                    </div>
                     <input type="hidden" id="cartaPropriaId">
                     <div class="filter-grid">
                         <div class="filter-group">
                             <label>Administradora</label>
                             <input type="text" id="cpAdministradora" required>
+                        </div>
+                        <div class="filter-group">
+                            <label>Grupo</label>
+                            <input type="text" id="cpGrupo">
+                        </div>
+                        <div class="filter-group">
+                            <label>Cota</label>
+                            <input type="text" id="cpCota">
                         </div>
                         <div class="filter-group">
                             <label>Tipo</label>
@@ -85,7 +100,7 @@
             <div class="admin-table-wrap">
                 <table class="admin-table" id="cartasPropriasTable">
                     <thead>
-                        <tr><th>Administradora</th><th>Tipo</th><th>Crédito</th><th>Entrada</th><th>Parcelas</th><th>Venc.</th><th></th></tr>
+                        <tr><th>Administradora</th><th>Grupo/Cota</th><th>Tipo</th><th>Crédito</th><th>Entrada</th><th>Parcelas</th><th>Venc.</th><th></th></tr>
                     </thead>
                     <tbody></tbody>
                 </table>
@@ -128,6 +143,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.worker.min.js';
+    </script>
+    <script src="extrato-parser.js"></script>
+    <script src="pdf-extract.js"></script>
     <script src="admin.js"></script>
 </body>
 </html>

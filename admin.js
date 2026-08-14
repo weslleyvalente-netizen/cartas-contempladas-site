@@ -78,6 +78,7 @@ async function carregarCartasProprias() {
     tbody.innerHTML = data.map((c) => `
         <tr>
             <td>${c.administradora}</td>
+            <td>${c.grupo ? escaparHtml(c.grupo) : ''}${c.grupo && c.cota ? ' / ' : ''}${c.cota ? escaparHtml(c.cota) : ''}</td>
             <td>${c.tipo}</td>
             <td>${formatarMoedaAdmin(c.credito)}</td>
             <td>${formatarMoedaAdmin(c.entrada)}</td>
@@ -94,6 +95,70 @@ async function carregarCartasProprias() {
 document.getElementById('novaCartaPropriaBtn').addEventListener('click', () => {
     document.getElementById('cartaPropriaForm').reset();
     document.getElementById('cartaPropriaId').value = '';
+    document.getElementById('avisoLanceBox').innerHTML = '';
+    document.getElementById('agioDesejadoBox').style.display = 'none';
+    document.getElementById('cartaPropriaFormBox').style.display = 'block';
+});
+
+document.getElementById('importarPdfBtn').addEventListener('click', () => {
+    document.getElementById('importarPdfInput').click();
+});
+
+document.getElementById('importarPdfInput').addEventListener('change', async (e) => {
+    const arquivo = e.target.files[0];
+    if (!arquivo) return;
+    e.target.value = '';
+
+    let resultado;
+    try {
+        const texto = await extrairTextoPDF(arquivo);
+        resultado = parsearExtrato(texto);
+    } catch (err) {
+        alert('Erro ao ler o PDF: ' + err.message);
+        return;
+    }
+
+    if (!resultado.contemplada) {
+        alert('⚠️ Esta cota ainda não foi contemplada. Não é possível cadastrar como carta disponível.');
+        return;
+    }
+
+    document.getElementById('cartaPropriaForm').reset();
+    document.getElementById('cartaPropriaId').value = '';
+    document.getElementById('cpAdministradora').value = resultado.administradora;
+    document.getElementById('cpGrupo').value = resultado.grupo || '';
+    document.getElementById('cpCota').value = resultado.cota || '';
+    document.getElementById('cpCredito').value = resultado.credito;
+    document.getElementById('cpPrazo').value = resultado.prazo;
+    document.getElementById('cpParcela').value = resultado.parcela;
+    if (resultado.vencimento) {
+        const [dia, mes, ano] = resultado.vencimento.split('/');
+        document.getElementById('cpVencimento').value = `${ano}-${mes}-${dia}`;
+    }
+
+    const avisoBox = document.getElementById('avisoLanceBox');
+    const classeAviso = resultado.statusLance === 'pago' ? 'pago'
+        : resultado.statusLance === 'indeterminado' ? 'indeterminado'
+        : 'pendente';
+    avisoBox.innerHTML = resultado.avisoLance
+        ? `<div class="aviso-lance ${classeAviso}">${resultado.avisoLance}</div>`
+        : '';
+
+    const agioBox = document.getElementById('agioDesejadoBox');
+    const agioInput = document.getElementById('agioDesejadoInput');
+    const custoDaCarta = resultado.custoDaCarta || 0;
+    if (resultado.custoDaCarta !== null) {
+        agioBox.style.display = 'block';
+        agioInput.value = '';
+        agioInput.oninput = () => {
+            const agio = parseFloat(agioInput.value) || 0;
+            document.getElementById('cpEntrada').value = (custoDaCarta + agio).toFixed(2);
+        };
+        document.getElementById('cpEntrada').value = custoDaCarta.toFixed(2);
+    } else {
+        agioBox.style.display = 'none';
+    }
+
     document.getElementById('cartaPropriaFormBox').style.display = 'block';
 });
 
@@ -106,6 +171,8 @@ function editarCartaPropria(id) {
     if (!carta) return;
     document.getElementById('cartaPropriaId').value = carta.id;
     document.getElementById('cpAdministradora').value = carta.administradora;
+    document.getElementById('cpGrupo').value = carta.grupo || '';
+    document.getElementById('cpCota').value = carta.cota || '';
     document.getElementById('cpTipo').value = carta.tipo;
     document.getElementById('cpCredito').value = carta.credito;
     document.getElementById('cpEntrada').value = carta.entrada;
@@ -130,6 +197,8 @@ document.getElementById('cartaPropriaForm').addEventListener('submit', async (e)
     const id = document.getElementById('cartaPropriaId').value;
     const registro = {
         administradora: document.getElementById('cpAdministradora').value,
+        grupo: document.getElementById('cpGrupo').value || null,
+        cota: document.getElementById('cpCota').value || null,
         tipo: document.getElementById('cpTipo').value,
         credito: parseFloat(document.getElementById('cpCredito').value),
         entrada: parseFloat(document.getElementById('cpEntrada').value),
