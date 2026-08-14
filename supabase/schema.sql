@@ -193,10 +193,12 @@ create policy parceiros_admin_all on public.parceiros
 -- row, not just the reservada_por/vendida_em columns; the column-level
 -- grant below is defense in depth on top of this, since reservada_por
 -- holds a real customer name) and applies the ativo filter client-side
--- via the parceiros join; admin can read all columns but can only ever
--- WRITE the `agio`, `reservada_por`, `vendida_em` columns — insert/delete
--- stay reserved for the cartas-sync robot, which uses the service_role
--- key and bypasses RLS entirely, so no policy is needed for it.
+-- via the parceiros join; admin can read all columns and can only ever
+-- WRITE the `agio`, `reservada_por`, `vendida_em` columns via UPDATE.
+-- Admin can also INSERT and DELETE full rows — used by the "Importar PDF
+-- de Parceiro" admin flow to replace a partner's inventory wholesale for
+-- partners with no scraping integration. The cartas-sync robot still uses
+-- the service_role key and bypasses RLS entirely for its own writes.
 create policy cartas_parceiros_public_read on public.cartas_parceiros
   for select to anon using (reservada_por is null and vendida_em is null);
 
@@ -207,9 +209,16 @@ create policy cartas_parceiros_admin_update on public.cartas_parceiros
   for update to authenticated
   using (public.is_admin()) with check (public.is_admin());
 
+create policy cartas_parceiros_admin_insert on public.cartas_parceiros
+  for insert to authenticated with check (public.is_admin());
+
+create policy cartas_parceiros_admin_delete on public.cartas_parceiros
+  for delete to authenticated using (public.is_admin());
+
 revoke update on public.cartas_parceiros from authenticated;
 grant select on public.cartas_parceiros to authenticated;
 grant update (agio, reservada_por, vendida_em) on public.cartas_parceiros to authenticated;
+grant insert, delete on public.cartas_parceiros to authenticated;
 
 revoke select on public.cartas_parceiros from anon;
 grant select (id, parceiro_id, codigo, administradora, tipo, credito, entrada, agio, prazo, parcela, vencimento, numero_sequencial, created_at, updated_at) on public.cartas_parceiros to anon;

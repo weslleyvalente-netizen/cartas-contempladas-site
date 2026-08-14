@@ -1,7 +1,7 @@
 const LIMITE_CREDITO_MOTO = 34000;
 const REGEX_LINHA = /^(\d+)\s+(\S+)\s+R\$\s*([\d.,]+)\s+R\$\s*([\d.,]+)\s+(\d+)\s+R\$\s*([\d.,]+)\s+(\d+)$/;
 
-function paraNumero(strMoeda) {
+function paraNumeroTabela(strMoeda) {
   return parseFloat(strMoeda.replace(/\./g, '').replace(',', '.'));
 }
 
@@ -29,16 +29,16 @@ function parsearTabelaParceiro(texto, dataReferencia, timestampImportacao) {
 
     const [, numeroPdfStr, administradora, creditoStr, entradaStr, prazoStr, parcelaStr, vctoDiaStr] = m;
     const numeroPdf = parseInt(numeroPdfStr, 10);
-    const credito = paraNumero(creditoStr);
+    const credito = paraNumeroTabela(creditoStr);
 
     resultado.push({
       numeroPdf,
       codigo: `${numeroPdf}-${timestampImportacao}`,
       administradora,
       credito,
-      entrada: paraNumero(entradaStr),
+      entrada: paraNumeroTabela(entradaStr),
       prazo: parseInt(prazoStr, 10),
-      parcela: paraNumero(parcelaStr),
+      parcela: paraNumeroTabela(parcelaStr),
       vencimento: calcularVencimento(parseInt(vctoDiaStr, 10), dataReferencia),
       tipo: credito <= LIMITE_CREDITO_MOTO ? 'moto' : 'carro'
     });

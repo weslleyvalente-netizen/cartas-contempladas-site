@@ -315,17 +315,25 @@ async function confirmarVendaParceiro(id) {
 // ---- Importar PDF de Parceiro ----
 
 let linhasImportacaoParceiro = [];
+let importacaoParceiroId = null;
+let importacaoParceiroNome = null;
+let importacaoParceiroApagarCount = 0;
 
 document.getElementById('importarPdfParceiroBtn').addEventListener('click', () => {
     linhasImportacaoParceiro = [];
+    importacaoParceiroId = null;
+    importacaoParceiroNome = null;
+    importacaoParceiroApagarCount = 0;
     document.getElementById('importarPdfParceiroInput').value = '';
     document.getElementById('importarPdfParceiroAviso').innerHTML = '';
     document.getElementById('importarPdfParceiroTableWrap').style.display = 'none';
     document.getElementById('confirmarImportacaoParceiroBtn').style.display = 'none';
+    document.getElementById('importarPdfParceiroSelect').disabled = false;
     document.getElementById('importarPdfParceiroBox').style.display = 'block';
 });
 
 document.getElementById('cancelarImportacaoParceiroBtn').addEventListener('click', () => {
+    document.getElementById('importarPdfParceiroSelect').disabled = false;
     document.getElementById('importarPdfParceiroBox').style.display = 'none';
 });
 
@@ -346,11 +354,13 @@ document.getElementById('importarPdfParceiroInput').addEventListener('change', a
         linhas = parsearTabelaParceiro(texto, new Date(), Date.now());
     } catch (err) {
         alert('Erro ao ler o PDF: ' + err.message);
+        e.target.value = '';
         return;
     }
 
     if (linhas.length === 0) {
         alert('Nenhuma cota reconhecida neste PDF.');
+        e.target.value = '';
         return;
     }
 
@@ -366,6 +376,10 @@ document.getElementById('importarPdfParceiroInput').addEventListener('change', a
     const apagar = existentes.length - protegidas;
     const nomeParceiro = document.getElementById('importarPdfParceiroSelect').selectedOptions[0].textContent;
 
+    importacaoParceiroId = parceiroId;
+    importacaoParceiroNome = nomeParceiro;
+    importacaoParceiroApagarCount = apagar;
+
     document.getElementById('importarPdfParceiroAviso').innerHTML = `
         <div class="aviso-lance pendente">
             Isso vai apagar ${apagar} cota(s) atual(is) do ${escaparHtml(nomeParceiro)}
@@ -378,6 +392,7 @@ document.getElementById('importarPdfParceiroInput').addEventListener('change', a
     renderizarTabelaImportacaoParceiro();
     document.getElementById('importarPdfParceiroTableWrap').style.display = 'block';
     document.getElementById('confirmarImportacaoParceiroBtn').style.display = 'inline-block';
+    document.getElementById('importarPdfParceiroSelect').disabled = true;
 });
 
 function renderizarTabelaImportacaoParceiro() {
@@ -402,22 +417,32 @@ function renderizarTabelaImportacaoParceiro() {
 }
 
 document.getElementById('confirmarImportacaoParceiroBtn').addEventListener('click', async () => {
-    const parceiroId = parseInt(document.getElementById('importarPdfParceiroSelect').value, 10);
+    const parceiroId = importacaoParceiroId;
+    const nomeParceiro = importacaoParceiroNome;
     const incluidas = linhasImportacaoParceiro.filter((l) => l.incluir);
     if (incluidas.length === 0) {
         alert('Nenhuma cota marcada pra importar.');
         return;
     }
-    if (!confirm(`Confirma a importação de ${incluidas.length} cota(s)? As cotas atuais não reservadas/vendidas deste parceiro serão apagadas.`)) return;
+    if (!confirm(`Confirma a importação de ${incluidas.length} cota(s) do ${nomeParceiro}? As cotas atuais não reservadas/vendidas deste parceiro serão apagadas.`)) return;
 
-    const { error: deleteError } = await supabaseClient
+    const { data: apagadas, error: deleteError } = await supabaseClient
         .from('cartas_parceiros')
         .delete()
         .eq('parceiro_id', parceiroId)
         .is('reservada_por', null)
-        .is('vendida_em', null);
+        .is('vendida_em', null)
+        .select('id');
     if (deleteError) {
-        mostrarErro(adminError, 'Erro ao apagar cotas antigas: ' + deleteError.message);
+        alert('Erro ao apagar cotas antigas: ' + deleteError.message);
+        return;
+    }
+    if (apagadas.length !== importacaoParceiroApagarCount) {
+        alert(
+            `Erro ao apagar cotas antigas: esperava apagar ${importacaoParceiroApagarCount} cota(s) do ${nomeParceiro}, ` +
+            `mas ${apagadas.length} foram apagadas. A importação foi interrompida antes de cadastrar as cotas novas ` +
+            `— confira as permissões (RLS) da tabela cartas_parceiros antes de tentar de novo.`
+        );
         return;
     }
 
@@ -436,10 +461,11 @@ document.getElementById('confirmarImportacaoParceiroBtn').addEventListener('clic
             agio: null
         })));
     if (insertError) {
-        mostrarErro(adminError, 'Erro ao cadastrar cotas novas: ' + insertError.message);
+        alert('Erro ao cadastrar cotas novas: ' + insertError.message);
         return;
     }
 
+    document.getElementById('importarPdfParceiroSelect').disabled = false;
     document.getElementById('importarPdfParceiroBox').style.display = 'none';
     carregarCartasParceiros();
 });
