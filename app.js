@@ -91,6 +91,16 @@
                 currency: 'BRL'
             }).format(valor);
         }
+
+        function formatarNumeroCarta(id) {
+            return `#${String(id).padStart(2, '0')}`;
+        }
+
+        function formatarAdministradora(carta) {
+            if (carta.origem === 'propria') return carta.administradora.toUpperCase();
+            const nome = carta.administradora.toLowerCase();
+            return nome.charAt(0).toUpperCase() + nome.slice(1);
+        }
         
         function renderizarCartas() {
             const container = document.getElementById('cardsContainer');
@@ -117,8 +127,8 @@
                                ${cartasSelecionadas.has(carta.id) ? 'checked' : ''}>
                     </div>
                     <div class="card-header">
-                        <div class="card-title">Cota #${carta.id}</div>
-                        <div class="card-type">${carta.administradora}</div>
+                        <div class="card-title">Cota ${formatarNumeroCarta(carta.id)}</div>
+                        <div class="card-type">${formatarAdministradora(carta)}</div>
                     </div>
                     <div class="card-info">📄 Crédito: <strong>${formatarMoeda(carta.credito)}</strong></div>
                     <div class="card-info">💰 Entrada: <strong>${formatarMoeda(carta.entrada)}</strong></div>
@@ -247,7 +257,7 @@
                 parcelasAgrupadas,
                 administradora: cartasJuncao[0].administradora,
                 vencimentos: vencimentosTexto,
-                cotasIds: cartasJuncao.map(c => `#${c.id}`).join(', ')
+                cotasIds: cartasJuncao.map(c => formatarNumeroCarta(c.id)).join(', ')
             });
         }
         
@@ -275,7 +285,7 @@
                 </div>
                 <div class="result-section">
                     <h4>📋 Cotas Selecionadas:</h4>
-                    <div>${resultado.cartas.map(c => `#${c.id}`).join(', ')}</div>
+                    <div>${resultado.cartas.map(c => formatarNumeroCarta(c.id)).join(', ')}</div>
                 </div>
                 <div class="result-section">
                     <h4>📆 Vencimento:</h4>
@@ -445,7 +455,7 @@ ${r.parcelasAgrupadas.map(p => `De ${p.inicio}	Até ${p.fim}	${formatarMoeda(p.v
                     </div>
                     <div class="card-info">📄 Crédito Total: <strong style="color: var(--color-teal-600); font-size: 16px;">${formatarMoeda(comb.creditoTotal)}</strong></div>
                     <div class="card-info">💰 Entrada Total: <strong>${formatarMoeda(comb.entradaTotal)}</strong></div>
-                    <div class="card-info">📋 Cotas: <strong>${comb.cotas.map(c => `#${c.id}`).join(', ')}</strong></div>
+                    <div class="card-info">📋 Cotas: <strong>${comb.cotas.map(c => formatarNumeroCarta(c.id)).join(', ')}</strong></div>
                     <div class="card-actions" style="grid-template-columns: 1fr;">
                         <button class="btn btn-primary" onclick='selecionarEVisualizarJuncao(${cotasIdsStr})'>👁️ Ver Detalhes da Junção</button>
                     </div>
