@@ -72,6 +72,7 @@ async function carregarCartasProprias() {
     const { data, error } = await supabaseClient
         .from('cartas_proprias')
         .select('*')
+        .is('vendida_em', null)
         .order('created_at', { ascending: false });
     if (error) {
         mostrarErro(adminError, 'Erro ao carregar cartas próprias: ' + error.message);
@@ -89,12 +90,32 @@ async function carregarCartasProprias() {
             <td>${formatarMoedaAdmin(c.entrada)}</td>
             <td>${c.prazo}x ${formatarMoedaAdmin(c.parcela)}</td>
             <td>${formatarDataAdmin(c.vencimento)}</td>
+            <td><input type="text" value="${c.reservada_por ? escaparHtml(c.reservada_por) : ''}" placeholder="nome do cliente"
+                       onchange="salvarReservaPropria(${c.id}, this.value)"></td>
             <td>
                 <button class="btn btn-clear" onclick="editarCartaPropria(${c.id})">✏️</button>
                 <button class="btn btn-clear" onclick="excluirCartaPropria(${c.id})">🗑️</button>
+                <button class="btn btn-clear" onclick="confirmarVendaPropria(${c.id})">✅</button>
             </td>
         </tr>
     `).join('');
+}
+
+async function salvarReservaPropria(id, valor) {
+    const reservada_por = valor.trim() === '' ? null : valor.trim();
+    const { error } = await supabaseClient.from('cartas_proprias').update({ reservada_por }).eq('id', id);
+    if (error) mostrarErro(adminError, 'Erro ao salvar reserva: ' + error.message);
+}
+
+async function confirmarVendaPropria(id) {
+    if (!confirm('Confirmar a venda desta carta? Ela vai sair da lista disponível.')) return;
+    const { error } = await supabaseClient.from('cartas_proprias').update({ vendida_em: new Date().toISOString() }).eq('id', id);
+    if (error) {
+        mostrarErro(adminError, 'Erro ao confirmar venda: ' + error.message);
+        return;
+    }
+    carregarCartasProprias();
+    if (typeof carregarCartasVendidas === 'function') carregarCartasVendidas();
 }
 
 function limparEstadoImportacao() {
@@ -239,6 +260,7 @@ async function carregarCartasParceiros() {
     const { data, error } = await supabaseClient
         .from('cartas_parceiros')
         .select('*, parceiros(nome)')
+        .is('vendida_em', null)
         .order('created_at', { ascending: false });
     if (error) {
         mostrarErro(adminError, 'Erro ao carregar cartas de parceiros: ' + error.message);
@@ -259,6 +281,9 @@ async function carregarCartasParceiros() {
                        style="width: 100px;"
                        onchange="salvarAgioCarta(${c.id}, this.value)">
             </td>
+            <td><input type="text" value="${c.reservada_por ? escaparHtml(c.reservada_por) : ''}" placeholder="nome do cliente"
+                       onchange="salvarReservaParceiro(${c.id}, this.value)"></td>
+            <td><button class="btn btn-clear" onclick="confirmarVendaParceiro(${c.id})">✅</button></td>
         </tr>
     `).join('');
 }
@@ -267,6 +292,23 @@ async function salvarAgioCarta(id, valor) {
     const agio = valor === '' ? null : parseFloat(valor);
     const { error } = await supabaseClient.from('cartas_parceiros').update({ agio }).eq('id', id);
     if (error) mostrarErro(adminError, 'Erro ao salvar ágio: ' + error.message);
+}
+
+async function salvarReservaParceiro(id, valor) {
+    const reservada_por = valor.trim() === '' ? null : valor.trim();
+    const { error } = await supabaseClient.from('cartas_parceiros').update({ reservada_por }).eq('id', id);
+    if (error) mostrarErro(adminError, 'Erro ao salvar reserva: ' + error.message);
+}
+
+async function confirmarVendaParceiro(id) {
+    if (!confirm('Confirmar a venda desta carta? Ela vai sair da lista disponível.')) return;
+    const { error } = await supabaseClient.from('cartas_parceiros').update({ vendida_em: new Date().toISOString() }).eq('id', id);
+    if (error) {
+        mostrarErro(adminError, 'Erro ao confirmar venda: ' + error.message);
+        return;
+    }
+    carregarCartasParceiros();
+    if (typeof carregarCartasVendidas === 'function') carregarCartasVendidas();
 }
 
 // ---- Parceiros ----
