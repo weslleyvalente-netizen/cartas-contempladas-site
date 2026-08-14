@@ -24,12 +24,12 @@ describe('parsearExtrato — cota 0661-00 (lance diluído já pago)', () => {
     expect(resultado.administradora).toBe('YAMAHA');
   });
 
-  it('não aplica nenhum ajuste (lance já pago)', () => {
+  it('desconta o débito do lance diluído já pago do valor investido', () => {
     expect(resultado.statusLance).toBe('pago');
     expect(resultado.credito).toBeCloseTo(34496.46, 2);
     expect(resultado.prazo).toBe(25);
     expect(resultado.parcela).toBeCloseTo(829.14, 2);
-    expect(resultado.custoDaCarta).toBeCloseTo(24265.76, 2);
+    expect(resultado.custoDaCarta).toBeCloseTo(18218.51, 2);
   });
 });
 

@@ -69,7 +69,11 @@ function parsearExtrato(texto) {
 
     if (diluidoPago || naoDiluidoPago) {
       statusLance = 'pago';
-      avisoLance = '✅ Lance já pago, nenhum ajuste necessário.';
+      const debitoPago = encontrarValorLinhaLance(secaoContaCorrente, 'DEBITO', diluidoPago);
+      if (debitoPago !== null) {
+        custoDaCarta = arredondar2((custoDaCarta || 0) - debitoPago);
+      }
+      avisoLance = '✅ Lance já pago, valor investido ajustado.';
     } else if (debitoDiluidoPendente !== null) {
       statusLance = 'diluido_pendente';
       const recbto = recbtoDiluidoPendente || 0;
