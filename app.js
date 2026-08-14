@@ -451,7 +451,7 @@ ${r.parcelasAgrupadas.map(p => `De ${p.inicio}	Até ${p.fim}	${formatarMoeda(p.v
                     <div class="card-badge" style="background: var(--color-slate-900);">Opção #${index + 1}</div>
                     <div class="card-header">
                         <div class="card-title">Junção de ${comb.cotas.length} cotas</div>
-                        <div class="card-type">${comb.cotas[0].administradora}</div>
+                        <div class="card-type">${formatarAdministradora(comb.cotas[0])}</div>
                     </div>
                     <div class="card-info">📄 Crédito Total: <strong style="color: var(--color-teal-600); font-size: 16px;">${formatarMoeda(comb.creditoTotal)}</strong></div>
                     <div class="card-info">💰 Entrada Total: <strong>${formatarMoeda(comb.entradaTotal)}</strong></div>
