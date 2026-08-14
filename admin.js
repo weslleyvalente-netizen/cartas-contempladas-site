@@ -312,6 +312,138 @@ async function confirmarVendaParceiro(id) {
     carregarCartasVendidas();
 }
 
+// ---- Importar PDF de Parceiro ----
+
+let linhasImportacaoParceiro = [];
+
+document.getElementById('importarPdfParceiroBtn').addEventListener('click', () => {
+    linhasImportacaoParceiro = [];
+    document.getElementById('importarPdfParceiroInput').value = '';
+    document.getElementById('importarPdfParceiroAviso').innerHTML = '';
+    document.getElementById('importarPdfParceiroTableWrap').style.display = 'none';
+    document.getElementById('confirmarImportacaoParceiroBtn').style.display = 'none';
+    document.getElementById('importarPdfParceiroBox').style.display = 'block';
+});
+
+document.getElementById('cancelarImportacaoParceiroBtn').addEventListener('click', () => {
+    document.getElementById('importarPdfParceiroBox').style.display = 'none';
+});
+
+document.getElementById('importarPdfParceiroInput').addEventListener('change', async (e) => {
+    const arquivo = e.target.files[0];
+    if (!arquivo) return;
+
+    const parceiroId = parseInt(document.getElementById('importarPdfParceiroSelect').value, 10);
+    if (!parceiroId) {
+        alert('Escolha o parceiro antes de selecionar o arquivo.');
+        e.target.value = '';
+        return;
+    }
+
+    let linhas;
+    try {
+        const texto = await extrairTextoPDF(arquivo);
+        linhas = parsearTabelaParceiro(texto, new Date(), Date.now());
+    } catch (err) {
+        alert('Erro ao ler o PDF: ' + err.message);
+        return;
+    }
+
+    if (linhas.length === 0) {
+        alert('Nenhuma cota reconhecida neste PDF.');
+        return;
+    }
+
+    const { data: existentes, error } = await supabaseClient
+        .from('cartas_parceiros')
+        .select('id, reservada_por, vendida_em')
+        .eq('parceiro_id', parceiroId);
+    if (error) {
+        mostrarErro(adminError, 'Erro ao consultar cotas atuais: ' + error.message);
+        return;
+    }
+    const protegidas = existentes.filter((c) => c.reservada_por || c.vendida_em).length;
+    const apagar = existentes.length - protegidas;
+    const nomeParceiro = document.getElementById('importarPdfParceiroSelect').selectedOptions[0].textContent;
+
+    document.getElementById('importarPdfParceiroAviso').innerHTML = `
+        <div class="aviso-lance pendente">
+            Isso vai apagar ${apagar} cota(s) atual(is) do ${escaparHtml(nomeParceiro)}
+            (${protegidas} reservada(s)/vendida(s) ficam protegida(s)) e cadastrar
+            ${linhas.length} cota(s) nova(s) desta lista.
+        </div>
+    `;
+
+    linhasImportacaoParceiro = linhas.map((l) => ({ ...l, incluir: true }));
+    renderizarTabelaImportacaoParceiro();
+    document.getElementById('importarPdfParceiroTableWrap').style.display = 'block';
+    document.getElementById('confirmarImportacaoParceiroBtn').style.display = 'inline-block';
+});
+
+function renderizarTabelaImportacaoParceiro() {
+    const tbody = document.querySelector('#importarPdfParceiroTable tbody');
+    tbody.innerHTML = linhasImportacaoParceiro.map((linha, i) => `
+        <tr>
+            <td>${linha.numeroPdf}</td>
+            <td>${escaparHtml(linha.administradora)}</td>
+            <td>${formatarMoedaAdmin(linha.credito)}</td>
+            <td>${formatarMoedaAdmin(linha.entrada)}</td>
+            <td>${linha.prazo}x ${formatarMoedaAdmin(linha.parcela)}</td>
+            <td>${escaparHtml(linha.vencimento)}</td>
+            <td>
+                <select onchange="linhasImportacaoParceiro[${i}].tipo = this.value">
+                    <option value="moto" ${linha.tipo === 'moto' ? 'selected' : ''}>moto</option>
+                    <option value="carro" ${linha.tipo === 'carro' ? 'selected' : ''}>carro</option>
+                </select>
+            </td>
+            <td><input type="checkbox" ${linha.incluir ? 'checked' : ''} onchange="linhasImportacaoParceiro[${i}].incluir = this.checked"></td>
+        </tr>
+    `).join('');
+}
+
+document.getElementById('confirmarImportacaoParceiroBtn').addEventListener('click', async () => {
+    const parceiroId = parseInt(document.getElementById('importarPdfParceiroSelect').value, 10);
+    const incluidas = linhasImportacaoParceiro.filter((l) => l.incluir);
+    if (incluidas.length === 0) {
+        alert('Nenhuma cota marcada pra importar.');
+        return;
+    }
+    if (!confirm(`Confirma a importação de ${incluidas.length} cota(s)? As cotas atuais não reservadas/vendidas deste parceiro serão apagadas.`)) return;
+
+    const { error: deleteError } = await supabaseClient
+        .from('cartas_parceiros')
+        .delete()
+        .eq('parceiro_id', parceiroId)
+        .is('reservada_por', null)
+        .is('vendida_em', null);
+    if (deleteError) {
+        mostrarErro(adminError, 'Erro ao apagar cotas antigas: ' + deleteError.message);
+        return;
+    }
+
+    const { error: insertError } = await supabaseClient
+        .from('cartas_parceiros')
+        .insert(incluidas.map((l) => ({
+            parceiro_id: parceiroId,
+            codigo: l.codigo,
+            administradora: l.administradora,
+            tipo: l.tipo,
+            credito: l.credito,
+            entrada: l.entrada,
+            prazo: l.prazo,
+            parcela: l.parcela,
+            vencimento: l.vencimento,
+            agio: null
+        })));
+    if (insertError) {
+        mostrarErro(adminError, 'Erro ao cadastrar cotas novas: ' + insertError.message);
+        return;
+    }
+
+    document.getElementById('importarPdfParceiroBox').style.display = 'none';
+    carregarCartasParceiros();
+});
+
 // ---- Cartas Vendidas ----
 
 async function carregarCartasVendidas() {
@@ -369,6 +501,9 @@ async function carregarParceiros() {
         mostrarErro(adminError, 'Erro ao carregar parceiros: ' + error.message);
         return;
     }
+    const select = document.getElementById('importarPdfParceiroSelect');
+    select.innerHTML = data.map((p) => `<option value="${p.id}">${escaparHtml(p.nome)}</option>`).join('');
+
     const tbody = document.querySelector('#parceirosTable tbody');
     tbody.innerHTML = data.map((p) => `
         <tr>

@@ -111,7 +111,33 @@
         </div>
 
         <div class="admin-section">
-            <h2>Cartas de Parceiros</h2>
+            <div class="admin-section-header">
+                <h2>Cartas de Parceiros</h2>
+                <button class="btn btn-clear" id="importarPdfParceiroBtn">📄 Importar PDF</button>
+            </div>
+            <div id="importarPdfParceiroBox" style="display:none;" class="admin-form-box">
+                <div class="filter-group" style="max-width:300px; margin-bottom:15px;">
+                    <label>Parceiro</label>
+                    <select id="importarPdfParceiroSelect"></select>
+                </div>
+                <div class="filter-group" style="margin-bottom:15px;">
+                    <label>Arquivo PDF</label>
+                    <input type="file" id="importarPdfParceiroInput" accept="application/pdf">
+                </div>
+                <div id="importarPdfParceiroAviso"></div>
+                <div class="admin-table-wrap" id="importarPdfParceiroTableWrap" style="display:none; margin-top:15px;">
+                    <table class="admin-table" id="importarPdfParceiroTable">
+                        <thead>
+                            <tr><th>N°</th><th>Administradora</th><th>Crédito</th><th>Entrada</th><th>Parcelas</th><th>Venc.</th><th>Tipo</th><th>Incluir</th></tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div style="display:flex; gap:10px; margin-top:15px;">
+                    <button class="btn btn-primary" id="confirmarImportacaoParceiroBtn" style="display:none;">Confirmar Importação</button>
+                    <button class="btn btn-clear" id="cancelarImportacaoParceiroBtn">Cancelar</button>
+                </div>
+            </div>
             <div class="admin-table-wrap">
                 <table class="admin-table" id="cartasParceirosTable">
                     <thead>
@@ -164,6 +190,7 @@
     </script>
     <script src="extrato-parser.js"></script>
     <script src="pdf-extract.js"></script>
+    <script src="parceiro-pdf-parser.js"></script>
     <script src="cartas-logic.js"></script>
     <script src="admin.js"></script>
 </body>
