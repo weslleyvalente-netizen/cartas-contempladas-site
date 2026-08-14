@@ -55,6 +55,8 @@ create table public.cartas_parceiros (
   parcela numeric(12,2) not null,
   vencimento text not null check (vencimento ~ '^\d{2}/\d{2}/\d{4}$'),
   numero_sequencial int,
+  reservada_por text,
+  vendida_em timestamptz,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   unique (parceiro_id, codigo)
@@ -84,6 +86,8 @@ create table public.cartas_proprias (
   parcela numeric(12,2) not null,
   vencimento date not null,
   numero_sequencial int,
+  reservada_por text,
+  vendida_em timestamptz,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -201,7 +205,7 @@ create policy cartas_parceiros_admin_update on public.cartas_parceiros
 
 revoke update on public.cartas_parceiros from authenticated;
 grant select on public.cartas_parceiros to authenticated;
-grant update (agio) on public.cartas_parceiros to authenticated;
+grant update (agio, reservada_por, vendida_em) on public.cartas_parceiros to authenticated;
 
 -- cartas_proprias: anon reads everything, admin has full CRUD.
 create policy cartas_proprias_public_read on public.cartas_proprias
