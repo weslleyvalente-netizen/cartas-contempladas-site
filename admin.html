@@ -38,9 +38,11 @@
         <div class="admin-section">
             <div class="admin-section-header">
                 <h2>Cartas Próprias</h2>
-                <button class="btn btn-primary" id="novaCartaPropriaBtn">+ Nova Carta</button>
-                <button class="btn btn-clear" id="importarPdfBtn">📄 Importar de PDF</button>
-                <input type="file" id="importarPdfInput" accept="application/pdf">
+                <div style="display:flex; gap:10px;">
+                    <button class="btn btn-primary" id="novaCartaPropriaBtn">+ Nova Carta</button>
+                    <button class="btn btn-clear" id="importarPdfBtn">📄 Importar de PDF</button>
+                    <input type="file" id="importarPdfInput" accept="application/pdf">
+                </div>
             </div>
             <div id="cartaPropriaFormBox" style="display:none;" class="admin-form-box">
                 <form id="cartaPropriaForm">
@@ -65,7 +67,8 @@
                         </div>
                         <div class="filter-group">
                             <label>Tipo</label>
-                            <select id="cpTipo">
+                            <select id="cpTipo" required>
+                                <option value="" selected disabled>Selecione…</option>
                                 <option value="moto">Moto</option>
                                 <option value="carro">Carro</option>
                             </select>

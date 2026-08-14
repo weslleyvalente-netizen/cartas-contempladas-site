@@ -92,11 +92,17 @@ async function carregarCartasProprias() {
     `).join('');
 }
 
+function limparEstadoImportacao() {
+    document.getElementById('avisoLanceBox').innerHTML = '';
+    document.getElementById('agioDesejadoBox').style.display = 'none';
+    document.getElementById('agioDesejadoInput').oninput = null;
+    document.getElementById('agioDesejadoInput').value = '';
+}
+
 document.getElementById('novaCartaPropriaBtn').addEventListener('click', () => {
     document.getElementById('cartaPropriaForm').reset();
     document.getElementById('cartaPropriaId').value = '';
-    document.getElementById('avisoLanceBox').innerHTML = '';
-    document.getElementById('agioDesejadoBox').style.display = 'none';
+    limparEstadoImportacao();
     document.getElementById('cartaPropriaFormBox').style.display = 'block';
 });
 
@@ -108,6 +114,8 @@ document.getElementById('importarPdfInput').addEventListener('change', async (e)
     const arquivo = e.target.files[0];
     if (!arquivo) return;
     e.target.value = '';
+
+    limparEstadoImportacao();
 
     let resultado;
     try {
@@ -124,6 +132,7 @@ document.getElementById('importarPdfInput').addEventListener('change', async (e)
     }
 
     document.getElementById('cartaPropriaForm').reset();
+    document.getElementById('cpTipo').value = '';
     document.getElementById('cartaPropriaId').value = '';
     document.getElementById('cpAdministradora').value = resultado.administradora;
     document.getElementById('cpGrupo').value = resultado.grupo || '';
@@ -169,6 +178,7 @@ document.getElementById('cancelarCartaPropriaBtn').addEventListener('click', () 
 function editarCartaPropria(id) {
     const carta = window._cartasPropriasCache.find((c) => c.id === id);
     if (!carta) return;
+    limparEstadoImportacao();
     document.getElementById('cartaPropriaId').value = carta.id;
     document.getElementById('cpAdministradora').value = carta.administradora;
     document.getElementById('cpGrupo').value = carta.grupo || '';

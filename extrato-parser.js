@@ -36,7 +36,7 @@ function parsearExtrato(texto) {
     return { contemplada: false };
   }
 
-  const grupo = extrairPrimeiro(texto, /Grupo:\s*(\S+)/i);
+  const grupo = extrairPrimeiro(texto, /^Grupo:\s*(\S+)/im);
   const cota = extrairPrimeiro(texto, /Cota:\s*(\S+)/i);
   const vencimento = extrairPrimeiro(texto, /Assembleia Atual:[^\n]*?Vencimento:\s*(\d{2}\/\d{2}\/\d{4})/i);
   const liquido = paraNumero(extrairPrimeiro(texto, /Liquido\s*[àa]\s*Pagar:\s*R\$\s*([\d.,]+)/i));
@@ -88,6 +88,13 @@ function parsearExtrato(texto) {
       statusLance = 'indeterminado';
       avisoLance = '⚠️ Lance detectado mas não identificado nas tabelas — confira os valores manualmente.';
     }
+  }
+
+  if (!Number.isFinite(prazo) || !Number.isFinite(parcela)) {
+    prazo = Number.isFinite(prazo) ? prazo : null;
+    parcela = Number.isFinite(parcela) ? parcela : null;
+    statusLance = 'indeterminado';
+    avisoLance = '⚠️ Não foi possível ler prazo/parcela do extrato — preencha à mão e confira os demais valores.';
   }
 
   return {
