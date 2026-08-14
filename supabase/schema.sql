@@ -53,6 +53,7 @@ create table public.cartas_parceiros (
   prazo int not null,
   parcela numeric(12,2) not null,
   vencimento text not null check (vencimento ~ '^\d{2}/\d{2}/\d{4}$'),
+  numero_sequencial int,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   unique (parceiro_id, codigo)
@@ -81,6 +82,7 @@ create table public.cartas_proprias (
   prazo int not null,
   parcela numeric(12,2) not null,
   vencimento date not null,
+  numero_sequencial int,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -88,6 +90,47 @@ create table public.cartas_proprias (
 create trigger cartas_proprias_set_updated_at
   before update on public.cartas_proprias
   for each row execute function public.set_updated_at();
+
+-- Assigns a short, per-carta-fixed sequential number, shared across
+-- cartas_proprias and cartas_parceiros, that resets to 1 on the first
+-- insert of each new calendar month. Only ever set on INSERT — a carta
+-- keeps its number even after the month rolls over. Runs even on rows
+-- that end up as no-op UPDATEs via upsert's ON CONFLICT DO UPDATE (the
+-- computed value is simply discarded in that case, since it never
+-- becomes a persisted row), so it never wastes numbers or leaves gaps.
+create or replace function public.atribuir_numero_sequencial()
+returns trigger
+language plpgsql
+as $$
+declare
+  mes_atual date := date_trunc('month', now());
+  max_atual int;
+begin
+  -- Serializes assignment across concurrent transactions (admin UI +
+  -- cartas-sync robot writing at the same time).
+  perform pg_advisory_xact_lock(hashtext('cartas_numero_sequencial'));
+
+  select coalesce(max(numero_sequencial), 0) into max_atual
+  from (
+    select numero_sequencial from public.cartas_proprias
+      where date_trunc('month', created_at) = mes_atual
+    union all
+    select numero_sequencial from public.cartas_parceiros
+      where date_trunc('month', created_at) = mes_atual
+  ) t;
+
+  new.numero_sequencial := max_atual + 1;
+  return new;
+end;
+$$;
+
+create trigger cartas_proprias_numero_sequencial
+  before insert on public.cartas_proprias
+  for each row execute function public.atribuir_numero_sequencial();
+
+create trigger cartas_parceiros_numero_sequencial
+  before insert on public.cartas_parceiros
+  for each row execute function public.atribuir_numero_sequencial();
 
 -- Simple key/value settings.
 create table public.configuracoes (
