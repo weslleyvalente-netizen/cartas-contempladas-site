@@ -241,6 +241,10 @@ async function carregarConfiguracoes() {
 
 document.getElementById('salvarConfigBtn').addEventListener('click', async () => {
     const valor = document.getElementById('agioPadraoGlobalInput').value;
+    if (valor === '' || isNaN(parseFloat(valor))) {
+        mostrarErro(adminError, 'Informe um valor numérico para o ágio padrão global.');
+        return;
+    }
     const { error } = await supabaseClient.from('configuracoes').update({ valor }).eq('chave', 'agio_padrao');
     if (error) {
         mostrarErro(adminError, 'Erro ao salvar configuração: ' + error.message);
