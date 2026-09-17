@@ -18,12 +18,18 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🏍️ Moto e Trilha - Cartas Contempladas</h1>
-            <p>Selecione até 5 cotas para fazer a junção. WhatsApp: (62) 96686311</p>
+            <div class="header-logo-chip">
+                <img src="/logo.png" alt="Moto e Trilha" class="header-logo">
+            </div>
+            <div>
+                <h1>Cartas Contempladas</h1>
+                <p>Selecione até 5 cotas para fazer a junção. WhatsApp: (62) 96686311</p>
+            </div>
         </div>
 
         <div class="status-box" id="statusBox">
-            <span id="statusText">Carregando...</span>
+            <span class="status-count" id="statusCount">Carregando...</span>
+            <span class="status-online"><span class="status-online-dot"></span> Online</span>
         </div>
 
         <div class="filters">
@@ -54,7 +60,7 @@
                 </div>
             </div>
             <div style="display: flex; gap: 10px;">
-                <button class="btn btn-primary" onclick="buscarCombinacoes()" style="flex: 1;">🔎 Buscar Combinações</button>
+                <button class="btn btn-primary" onclick="buscarCombinacoes()" style="flex: 1;">Encontrar melhor combinação</button>
                 <button class="btn btn-clear" onclick="limparBusca()">🧹 Limpar</button>
             </div>
         </div>

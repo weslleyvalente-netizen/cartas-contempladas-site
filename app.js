@@ -46,7 +46,7 @@
                     agioPadraoGlobal
                 });
 
-                document.getElementById('statusText').innerHTML = `${cartas.length} cotas ✅ Online`;
+                document.getElementById('statusCount').textContent = `${cartas.length} cotas disponíveis`;
                 renderizarCartas();
             } catch (error) {
                 console.error('Erro ao carregar:', error);
@@ -78,7 +78,7 @@
                 };
             }).filter(c => c !== null);
             
-            document.getElementById('statusText').innerHTML = `${cartas.length} cotas ✅ Online`;
+            document.getElementById('statusCount').textContent = `${cartas.length} cotas disponíveis`;
             renderizarCartas();
         }
         
