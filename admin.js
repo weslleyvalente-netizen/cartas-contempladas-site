@@ -89,15 +89,16 @@ async function carregarCartasProprias() {
             <td>${c.tipo}</td>
             <td>${formatarMoedaAdmin(c.credito)}</td>
             <td><input type="number" step="0.01" value="${c.custo ?? ''}" placeholder="0,00" class="campo-custo-propria"
-                       style="width: 100px;"
+                       style="width: 72px;"
                        onchange="salvarCustoAgioPropria(${c.id}, this.value, this.closest('tr').querySelector('.campo-agio-propria').value)"></td>
             <td><input type="number" step="0.01" value="${c.agio ?? ''}" placeholder="0,00" class="campo-agio-propria"
-                       style="width: 100px;"
+                       style="width: 72px;"
                        onchange="salvarCustoAgioPropria(${c.id}, this.closest('tr').querySelector('.campo-custo-propria').value, this.value)"></td>
             <td>${formatarMoedaAdmin(c.entrada)}</td>
             <td>${c.prazo}x ${formatarMoedaAdmin(c.parcela)}</td>
             <td>${formatarDataAdmin(c.vencimento)}</td>
             <td><input type="text" value="${c.reservada_por ? escaparHtml(c.reservada_por) : ''}" placeholder="nome do cliente"
+                       style="width: 120px;"
                        onchange="salvarReservaPropria(${c.id}, this.value)"></td>
             <td>
                 <button class="btn btn-clear" onclick="editarCartaPropria(${c.id})">✏️</button>
