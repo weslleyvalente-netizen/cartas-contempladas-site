@@ -81,6 +81,8 @@ create table public.cartas_proprias (
   cota text,
   tipo text not null default 'moto' check (tipo in ('moto','carro')),
   credito numeric(12,2) not null,
+  custo numeric(12,2),
+  agio numeric(12,2),
   entrada numeric(12,2) not null,
   prazo int not null,
   parcela numeric(12,2) not null,

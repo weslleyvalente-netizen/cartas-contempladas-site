@@ -88,6 +88,12 @@ async function carregarCartasProprias() {
             <td>${c.grupo ? escaparHtml(c.grupo) : ''}${c.grupo && c.cota ? ' / ' : ''}${c.cota ? escaparHtml(c.cota) : ''}</td>
             <td>${c.tipo}</td>
             <td>${formatarMoedaAdmin(c.credito)}</td>
+            <td><input type="number" step="0.01" value="${c.custo ?? ''}" placeholder="0,00" class="campo-custo-propria"
+                       style="width: 100px;"
+                       onchange="salvarCustoAgioPropria(${c.id}, this.value, this.closest('tr').querySelector('.campo-agio-propria').value)"></td>
+            <td><input type="number" step="0.01" value="${c.agio ?? ''}" placeholder="0,00" class="campo-agio-propria"
+                       style="width: 100px;"
+                       onchange="salvarCustoAgioPropria(${c.id}, this.closest('tr').querySelector('.campo-custo-propria').value, this.value)"></td>
             <td>${formatarMoedaAdmin(c.entrada)}</td>
             <td>${c.prazo}x ${formatarMoedaAdmin(c.parcela)}</td>
             <td>${formatarDataAdmin(c.vencimento)}</td>
@@ -108,6 +114,21 @@ async function salvarReservaPropria(id, valor) {
     if (error) mostrarErro(adminError, 'Erro ao salvar reserva: ' + error.message);
 }
 
+async function salvarCustoAgioPropria(id, custoStr, agioStr) {
+    const custo = custoStr === '' ? null : parseFloat(custoStr);
+    const agio = agioStr === '' ? null : parseFloat(agioStr);
+    const registro = { custo, agio };
+    if (custo !== null && agio !== null) {
+        registro.entrada = custo + agio;
+    }
+    const { error } = await supabaseClient.from('cartas_proprias').update(registro).eq('id', id);
+    if (error) {
+        mostrarErro(adminError, 'Erro ao salvar custo/ágio: ' + error.message);
+        return;
+    }
+    carregarCartasProprias();
+}
+
 async function confirmarVendaPropria(id) {
     if (!confirm('Confirmar a venda desta carta? Ela vai sair da lista disponível.')) return;
     const { error } = await supabaseClient.from('cartas_proprias').update({ vendida_em: new Date().toISOString() }).eq('id', id);
@@ -121,10 +142,17 @@ async function confirmarVendaPropria(id) {
 
 function limparEstadoImportacao() {
     document.getElementById('avisoLanceBox').innerHTML = '';
-    document.getElementById('agioDesejadoBox').style.display = 'none';
-    document.getElementById('agioDesejadoInput').oninput = null;
-    document.getElementById('agioDesejadoInput').value = '';
 }
+
+function sincronizarEntradaCustoAgio() {
+    const custo = parseFloat(document.getElementById('cpCusto').value);
+    const agio = parseFloat(document.getElementById('cpAgio').value);
+    if (!isNaN(custo) && !isNaN(agio)) {
+        document.getElementById('cpEntrada').value = (custo + agio).toFixed(2);
+    }
+}
+document.getElementById('cpCusto').addEventListener('input', sincronizarEntradaCustoAgio);
+document.getElementById('cpAgio').addEventListener('input', sincronizarEntradaCustoAgio);
 
 document.getElementById('novaCartaPropriaBtn').addEventListener('click', () => {
     document.getElementById('cartaPropriaForm').reset();
@@ -180,19 +208,10 @@ document.getElementById('importarPdfInput').addEventListener('change', async (e)
         ? `<div class="aviso-lance ${classeAviso}">${resultado.avisoLance}</div>`
         : '';
 
-    const agioBox = document.getElementById('agioDesejadoBox');
-    const agioInput = document.getElementById('agioDesejadoInput');
-    const custoDaCarta = resultado.custoDaCarta || 0;
     if (resultado.custoDaCarta !== null) {
-        agioBox.style.display = 'block';
-        agioInput.value = '';
-        agioInput.oninput = () => {
-            const agio = parseFloat(agioInput.value) || 0;
-            document.getElementById('cpEntrada').value = (custoDaCarta + agio).toFixed(2);
-        };
-        document.getElementById('cpEntrada').value = custoDaCarta.toFixed(2);
-    } else {
-        agioBox.style.display = 'none';
+        document.getElementById('cpCusto').value = resultado.custoDaCarta.toFixed(2);
+        document.getElementById('cpAgio').value = '';
+        document.getElementById('cpEntrada').value = resultado.custoDaCarta.toFixed(2);
     }
 
     document.getElementById('cartaPropriaFormBox').style.display = 'block';
@@ -212,6 +231,8 @@ function editarCartaPropria(id) {
     document.getElementById('cpCota').value = carta.cota || '';
     document.getElementById('cpTipo').value = carta.tipo;
     document.getElementById('cpCredito').value = carta.credito;
+    document.getElementById('cpCusto').value = carta.custo ?? '';
+    document.getElementById('cpAgio').value = carta.agio ?? '';
     document.getElementById('cpEntrada').value = carta.entrada;
     document.getElementById('cpPrazo').value = carta.prazo;
     document.getElementById('cpParcela').value = carta.parcela;
@@ -232,13 +253,19 @@ async function excluirCartaPropria(id) {
 document.getElementById('cartaPropriaForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const id = document.getElementById('cartaPropriaId').value;
+    const custoStr = document.getElementById('cpCusto').value;
+    const agioStr = document.getElementById('cpAgio').value;
+    const custo = custoStr === '' ? null : parseFloat(custoStr);
+    const agio = agioStr === '' ? null : parseFloat(agioStr);
     const registro = {
         administradora: document.getElementById('cpAdministradora').value,
         grupo: document.getElementById('cpGrupo').value || null,
         cota: document.getElementById('cpCota').value || null,
         tipo: document.getElementById('cpTipo').value,
         credito: parseFloat(document.getElementById('cpCredito').value),
-        entrada: parseFloat(document.getElementById('cpEntrada').value),
+        custo,
+        agio,
+        entrada: custo !== null && agio !== null ? custo + agio : parseFloat(document.getElementById('cpEntrada').value),
         prazo: parseInt(document.getElementById('cpPrazo').value, 10),
         parcela: parseFloat(document.getElementById('cpParcela').value),
         vencimento: document.getElementById('cpVencimento').value

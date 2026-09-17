@@ -47,10 +47,6 @@
             <div id="cartaPropriaFormBox" style="display:none;" class="admin-form-box">
                 <form id="cartaPropriaForm">
                     <div id="avisoLanceBox"></div>
-                    <div class="filter-group" id="agioDesejadoBox" style="display:none; max-width: 250px; margin-bottom: 15px;">
-                        <label>Ágio desejado (R$)</label>
-                        <input type="number" step="0.01" id="agioDesejadoInput" placeholder="0,00">
-                    </div>
                     <input type="hidden" id="cartaPropriaId">
                     <div class="filter-grid">
                         <div class="filter-group">
@@ -78,6 +74,14 @@
                             <input type="number" step="0.01" id="cpCredito" required>
                         </div>
                         <div class="filter-group">
+                            <label>Custo (R$)</label>
+                            <input type="number" step="0.01" id="cpCusto">
+                        </div>
+                        <div class="filter-group">
+                            <label>Ágio (R$)</label>
+                            <input type="number" step="0.01" id="cpAgio">
+                        </div>
+                        <div class="filter-group">
                             <label>Entrada (R$)</label>
                             <input type="number" step="0.01" id="cpEntrada" required>
                         </div>
@@ -103,7 +107,7 @@
             <div class="admin-table-wrap">
                 <table class="admin-table" id="cartasPropriasTable">
                     <thead>
-                        <tr><th>#ID</th><th>Administradora</th><th>Grupo/Cota</th><th>Tipo</th><th>Crédito</th><th>Entrada</th><th>Parcelas</th><th>Venc.</th><th>Reservada por</th><th></th></tr>
+                        <tr><th>#ID</th><th>Administradora</th><th>Grupo/Cota</th><th>Tipo</th><th>Crédito</th><th>Custo (R$)</th><th>Ágio (R$)</th><th>Entrada</th><th>Parcelas</th><th>Venc.</th><th>Reservada por</th><th></th></tr>
                     </thead>
                     <tbody></tbody>
                 </table>
