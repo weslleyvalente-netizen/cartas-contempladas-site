@@ -5,6 +5,7 @@ const { parsearExtrato } = require('./extrato-parser.js');
 
 const extrato0661 = fs.readFileSync(path.join(__dirname, 'fixtures/extrato-0661.txt'), 'utf8');
 const extrato0091 = fs.readFileSync(path.join(__dirname, 'fixtures/extrato-0091.txt'), 'utf8');
+const extrato0955 = fs.readFileSync(path.join(__dirname, 'fixtures/extrato-0955.txt'), 'utf8');
 
 describe('parsearExtrato — cota não contemplada', () => {
   it('retorna contemplada:false quando não há Dt. Contemplação', () => {
@@ -49,6 +50,26 @@ describe('parsearExtrato — cota 0091-00 (lance diluído pendente)', () => {
     expect(resultado.prazo).toBe(29);
     expect(resultado.parcela).toBeCloseTo(474.74, 2);
     expect(resultado.custoDaCarta).toBeCloseTo(9185.01, 2);
+  });
+});
+
+describe('parsearExtrato — cota 0955-00 (lance diluído pendente sem linha DEBITO)', () => {
+  const resultado = parsearExtrato(extrato0955);
+
+  it('extrai contemplada, grupo, cota, vencimento', () => {
+    expect(resultado.contemplada).toBe(true);
+    expect(resultado.grupo).toBe('009001');
+    expect(resultado.cota).toBe('0955-00');
+    expect(resultado.vencimento).toBe('13/10/2026');
+  });
+
+  it('mantém o crédito (sem DEBITO pra descontar), abate só a parcela e soma o RECBTO ao custo, mantém o prazo', () => {
+    expect(resultado.statusLance).toBe('diluido_pendente');
+    expect(resultado.credito).toBeCloseTo(23258.00, 2);
+    expect(resultado.prazo).toBe(40);
+    expect(resultado.parcela).toBeCloseTo(488.34, 2);
+    expect(resultado.custoDaCarta).toBeCloseTo(9835.53, 2);
+    expect(resultado.avisoLance).toBe('⚠️ Lance diluído pendente, valores já ajustados.');
   });
 });
 

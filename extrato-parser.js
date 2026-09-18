@@ -74,11 +74,15 @@ function parsearExtrato(texto) {
         custoDaCarta = arredondar2((custoDaCarta || 0) - debitoPago);
       }
       avisoLance = '✅ Lance já pago, valor investido ajustado.';
-    } else if (debitoDiluidoPendente !== null) {
+    } else if (debitoDiluidoPendente !== null || recbtoDiluidoPendente !== null) {
+      // Quando só existe RECBTO (sem DEBITO correspondente), o lance está
+      // inteiramente embutido nas parcelas futuras — o crédito não muda,
+      // só a parcela cai pelo valor do RECBTO diluído no prazo restante.
       statusLance = 'diluido_pendente';
       const recbto = recbtoDiluidoPendente || 0;
-      credito = arredondar2(liquido - debitoDiluidoPendente);
-      parcela = arredondar2(parcela - (recbto + debitoDiluidoPendente) / prazo);
+      const debito = debitoDiluidoPendente || 0;
+      credito = arredondar2(liquido - debito);
+      parcela = arredondar2(parcela - (recbto + debito) / prazo);
       custoDaCarta = arredondar2((custoDaCarta || 0) + recbto);
       avisoLance = '⚠️ Lance diluído pendente, valores já ajustados.';
     } else if (debitoNaoDiluidoPendente !== null) {

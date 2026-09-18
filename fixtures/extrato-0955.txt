@@ -1,0 +1,90 @@
+0101 YAMAHA ADM DE CONSORCIO LTDA 18/09/2026 19:56:07
+Extrato do Consorciado - Extrato Atualizado Ouvidoria: 008007749000
+Ouvidoria: 0 ()
+Grupo: 009001 Cota: 0955-00 WESLLEY JOAQUIM ANTONIO MAGALHAES VALENTE Contrato: 20550037
+Dados Cadastrais
+Pessoa: Física Data Nascimento: 12/04/1984
+CPF/CNPJ: 980.225.201-87 Documento: 2175655 Profissão: AGENTE ADM
+Endereço de Correspondência
+Endereço: RUA 205 Q3 L22 n°: SN Complemento: CEP: 73900000
+Bairro: AUGUSTO J VALENTE 2 Cidade: POSSE UF: GO
+Cx. Postal: Telefone: 62 996188374 Ramal:
+Filiação
+Nome do pai: ANIZIO ANTONIO DE MAGALHAES Nome da mãe: CLEICE COSTA VALENTE MAGALHAES
+Dados do Plano
+Data Venda: 25/06/2026 Data Adesão: 24/06/2026 Tipo de Venda: CONTEMPLA + MEGA
+1ª Assembleia: 16/07/2026 036 Taxa Adm: 20,0000% Produto: 000001MOTOCICLETAS
+Plano Básico: 48 meses Fundo Reserva: 0,0000% SubProduto: 000001MOTOCICLETAS
+Prazo do grupo: 78 meses % Mensal do Fundo Comum: 2,0877% Último reajuste em: 21/08/2026
+Plano de Seguro: 000008NOVO - MOTO (VIDA & SQG)% Mensal c/ Taxas: 2,9372%
+Seguradora: 001MAPFRE SEGUROS GERAIS% Cob. Contemp: 0,0000%
+Assembleia Atual: 19/10/2026 039 Vencimento: 13/10/2026 Local: YAMAHA ADM DE CONSORCIO LTDA
+Filial de Venda: 000019 GOIAS - GO Ponto de Venda: 008121 MOTO E TRILHA COMERCIO DE VEICULOS ME LTDA
+Filial Adm.: 000003 YAMAHA ADM. DE CONSORCIO LTDA. Comissionado: 008121 MOTO E TRILHA COMERCIO DE VEICULOS ME LTDA
+Convênio: 000000
+000080
+00
+PARCEIROS COMERCIAIS
+Sit. de Cobrança: NORMAL Data Última Sit.: 25/06/2026 10:13:20
+Bem: 919TX TTR 230 Valor Crédito: R$ 23.258,00
+Data prevista para o encerramento: 17/01/2030 Data do último vencimento: 14/01/2030
+Contemplação
+Dt. Contemplação: 17/09/2026 Crédito: R$ 23.258,00
+Tipo Contempl.: Lance 12 pcls. Crédito Corrigido: R$ 23.258,00
+Data do Pagamento: Valor Bem Entregue: R$ 0,00
+Entrega Docum.: Liquido à Pagar: R$ 23.258,00
+Percentuais
+Pago
+% Normal: 6,2631%
+% Antecipado: 0,0000%
+Pendente
+0,0000%
+A cobrar
+93,7369%
+Total
+100,0000%
+0,0000%
+% Mensal do Fundo Comum: 2,0877%
+Ideal Pago: 6,2631%
+Diferença: 0,0000%
+Contribuição Mensal
+% Seguro: 0,1465%
+TOTAL 6,2631% 0,0000% 93,7369% 100,0000% Ideal Devido: 93,7369% Valor Contrib. Mensal: R$ 683,14
+Conta Corrente
+Ass. Aviso Histórico Vencto. Pagto. Bem VL. Créd Vl. Devido Vl. Pago Multa Juros Seguro % Pago % Difer
+001 84392723 001-0 RECBTO. PARCELA 13/07/2026 24/06/2026 919TX R$ 23.155,00 R$ 680,12 R$ 680,12 R$ 0,00 R$ 0,00 R$ 33,93 2,0877% 0,0000%
+002 85217749 001-0 RECBTO. PARCELA 12/08/2026 12/08/2026 919TX R$ 23.155,00 R$ 680,12 R$ 680,12 R$ 0,00 R$ 0,00 R$ 33,93 2,0877% 0,0000%
+003 85781534 001-0 RECBTO. PARCELA 14/09/2026 14/09/2026 919TX R$ 23.258,00 R$ 683,14 R$ 683,14 R$ 0,00 R$ 0,00 R$ 34,08 2,0877% 0,0000%
+(*) Movimento não apropriado TOTAIS R$ 2.043,38 R$ 2.043,38 R$ 0,00 R$ 0,00 R$ 101,94 6,2631% 0,0000%
+Pendência
+Ass. Aviso Histórico Vencto. Bem Vl. Crédito Vl. Parcela Multa Juros Seguro % Normal
+003 045338997 130 RECBTO LANCE DILUIDO 23/09/2026 919TX R$ 23.258,00 R$ 7.792,15 R$ 0,00 R$ 0,00 R$ 0,00 0,0000%
+TOTAIS: R$ 7.792,15 0,0000%
+Valores / Percentuais Pagos
+Fundo Comum: R$ 1.452,38 6,2631%
+Fundo de Reserva: R$ 0,00 0,0000%
+Taxa de Administração: R$ 489,06 2,1090%
+Adesão(-): R$ 0,00 0,0000%
+Seguros: R$ 101,94
+Multas: R$ 0,00
+Juros: R$ 0,00
+Outros Valores: R$ 0,00
+TOTAL R$ 2.043,38 8,3721%
+Valores / Percentuais a Pagar
+Fundo Comum: R$ 21.801,33 93,7369%
+Fundo de Reserva: R$ 0,00 0,0000%
+Taxa de Administração: R$ 4.161,09 17,8910%
+Adesão: R$ 0,00 0,0000%
+Seguros: R$ 0,00 0,0000%
+Multas: R$ 0,00 0,0000%
+Juros: R$ 0,00 0,0000%
+Outros Valores: R$ 0,00 0,0000%
+Diferença de Parcela: R$ 0,00 0,0000%
+TOTAL R$ 25.962,42 111,6279%
+Resumo Parcelas a Pagar
+Qtde Total: 40,00 Qtde Furo: 0,00
+Resumo Parcelas Pagas
+Qtde Total: 003 Em Atraso: 1 a 30 dias: 000 0,0000%
+31 a 60 dias: 000 0,0000%
+Mais de 60 dias: 000 0,0000%
+Qtde Total Atraso: 000 0,0000%
